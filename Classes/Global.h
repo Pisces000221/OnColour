@@ -14,6 +14,9 @@ namespace onclr {
         return scene; \
     }
 
+#define IS_ON_PC (CC_TARGET_PLATFORM == CC_PLATFORM_WINDOWS) \
+    || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+
 extern cocos2d::Size vsize;
 void init();
 
