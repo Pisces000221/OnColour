@@ -1,0 +1,13 @@
+*~
+cocos2d/
+linux-build/
+proj.android/assets/
+proj.android/bin/
+proj.android/gen/
+proj.android/libs/
+proj.android/obj/
+proj.android/local.properties
+proj.ios_mac/
+proj.win32/
+proj.wp8-xaml/
+publish/
