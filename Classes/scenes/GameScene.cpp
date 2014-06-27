@@ -35,10 +35,10 @@ bool Gameplay::init()
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode key, Event* event) {
         float x = 0, y = 0;
-        if (key == EventKeyboard::KeyCode::KEY_UP_ARROW) y = 0.3f;
-        if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -0.3f;
-        if (key == EventKeyboard::KeyCode::KEY_LEFT_ARROW) x = -0.3f;
-        if (key == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) x = 0.3f;
+        if (key == EventKeyboard::KeyCode::KEY_UP_ARROW) y = 1;
+        if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -1;
+        if (key == EventKeyboard::KeyCode::KEY_LEFT_ARROW) x = -1;
+        if (key == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) x = 1;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
             s_key = KEYBOARD_SCHEDULE_KEY_2;
@@ -58,11 +58,11 @@ bool Gameplay::init()
             this->getScheduler()->unschedule(KEYBOARD_SCHEDULE_KEY_2, this);
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, _player);
-#else
+#else   // ohh... a real phone or tablet!
     // Enable accelerating
     // Copied from cpp-tests (cocos2d-x-3.2alpha0)
     auto listener = EventListenerAcceleration::create([this](Acceleration* acc, Event* event) {
-        this->moveBall(acc->x, acc->y, acc->timestamp);
+        this->moveBall(acc->x, acc->y, 0 /*acc->timestamp * 1e-9*/);
     });
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, _player);
 
@@ -76,8 +76,13 @@ bool Gameplay::init()
 void Gameplay::moveBall(float acc_x, float acc_y, float dt)
 {
     auto curpos = _player->getPosition();
-    curpos.x += acc_x * 720.0f * dt;    // TODO: adjust sensitivity in the settings page
-    curpos.y += acc_y * 720.0f * dt;    // Maybe sensitivity is between 8 and 24 (decide later)
+#if IS_ON_PC
+    curpos.x += acc_x * 216.0f * dt;
+    curpos.y += acc_y * 216.0f * dt;
+#else
+    curpos.x += acc_x * 12.0f;      // TODO: adjust sensitivity in the settings page
+    curpos.y += acc_y * 12.0f;      // Maybe sensitivity is between 8 and 24 (decide later)
+#endif
     FIX_POS(curpos.x, PLAYER_RADIUS, onclr::vsize.width - PLAYER_RADIUS);
     FIX_POS(curpos.y, PLAYER_RADIUS, onclr::vsize.height - PLAYER_RADIUS);
     _player->setPosition(curpos);
