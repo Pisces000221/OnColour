@@ -15,6 +15,10 @@ public:
         ret->autorelease();
         return ret;
     }
+    void setColor(cocos2d::Color4F colour);
+
+protected:
+    float _radius;
 };
 
 #endif

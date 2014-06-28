@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Global.h"
 #include "Bubble.h"
+#include "BorderedBubble.h"
 
 class Gameplay : public cocos2d::Layer
 {
@@ -25,9 +26,10 @@ protected:
     // Maybe we should use onEnter instead?
     void init2();
 
-    Bubble *_player;
+    BorderedBubble *_player;
     cocos2d::Label *_scoreDisplayer;
     float _score;
+    float _timeToLastBubGen;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];
 
     void goBack(cocos2d::Ref *sender);

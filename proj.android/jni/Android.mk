@@ -17,7 +17,8 @@ LOCAL_SRC_FILES := oncolour/main.cpp \
                    ../../Classes/scenes/StartupScene.cpp \
                    ../../Classes/scenes/GameScene.cpp \
                    ../../Classes/widgets/MenuItemLabelTint.cpp \
-                   ../../Classes/widgets/Bubble.cpp
+                   ../../Classes/widgets/Bubble.cpp \
+                   ../../Classes/widgets/BorderedBubble.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
                     $(LOCAL_PATH)/../../Classes/scenes \

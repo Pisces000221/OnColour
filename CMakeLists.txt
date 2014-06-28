@@ -64,6 +64,7 @@ set(GAME_SRC
   Classes/scenes/GameScene.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
+  Classes/widgets/BorderedBubble.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC
@@ -77,6 +78,7 @@ set(GAME_SRC
   Classes/scenes/GameScene.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
+  Classes/widgets/BorderedBubble.cpp
 )
 endif()
 
