@@ -19,6 +19,7 @@ namespace onclr {
 
 extern cocos2d::Size vsize;
 void init();
+const cocos2d::Size mapsize = cocos2d::Size(1200, 800);
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,

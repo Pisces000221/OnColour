@@ -11,9 +11,13 @@ using namespace cocos2d;
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
 #define KEYBOARD_SCHEDULE_KEY_2 "KEYBD_BALLMOVE_SECOND"
 
-bool Gameplay::init()
+void Gameplay::init2()
 {
-    if (!LayerColor::initWithColor(Color4B(255, 255, 255, 255))) return false;
+    auto scene = this->getScene();
+    // The background
+    auto bg = LayerColor::create(Color4B(255, 255, 255, 255));
+    scene->addChild(bg, -1);    // the very, very bottom ('end' in bring-to-front/send-to-end)
+    moveBall(0, 0, 0);          // move the view to show the player again
 
     // The 'back' menu
     auto backItem = MenuItemImage::create(
@@ -22,20 +26,29 @@ bool Gameplay::init()
     backItem->setNormalizedPosition(Vec2::ANCHOR_TOP_LEFT);
     auto menu = Menu::create(backItem, NULL);
     menu->setPosition(Vec2::ZERO);
-    this->addChild(menu);
+    scene->addChild(menu);
 
     // The score displayer
     _scoreDisplayer = onclr::label("0 s", 80, false);
     _scoreDisplayer->setNormalizedPosition(Vec2(0.5, 0.5));
     _scoreDisplayer->setColor(Color3B::BLACK);
     _scoreDisplayer->setOpacity(128);
-    this->addChild(_scoreDisplayer);
+    scene->addChild(_scoreDisplayer);
+}
+
+bool Gameplay::init()
+{
+    if (!Layer::init()) return false;
+    this->setContentSize(onclr::mapsize);
+
+    // Reset score
     _score = 0.0f;
 
     // The player
     _player = Bubble::create(PLAYER_RADIUS, Color4F(0, 0, 0, 1));
     // Don't use normalized positions here since we need to set absolute position later
-    _player->setPosition(Vec2(onclr::vsize.width / 2, onclr::vsize.height / 2));
+    // What's more, its parent's size is onclr::mapsize!
+    _player->setPosition(Vec2(onclr::mapsize.width / 2, onclr::mapsize.height / 2));
     this->addChild(_player);
 
 #if IS_ON_PC
@@ -80,6 +93,8 @@ bool Gameplay::init()
 #endif
 
     // Turn on score scheduler
+    //http://blog.csdn.net/qq575787460/article/details/8531397
+    // Father-tricking CC_CALLBACK_1...
     this->getScheduler()->schedule(std::bind(&Gameplay::tick, this, std::placeholders::_1),
         this, 1, false, "GAME_SCORE_TICKER");
 
@@ -96,9 +111,15 @@ void Gameplay::moveBall(float acc_x, float acc_y, float dt)
     curpos.x += acc_x * 12.0f;      // TODO: adjust sensitivity in the settings page
     curpos.y += acc_y * 12.0f;      // Maybe sensitivity is between 8 and 24 (decide later)
 #endif
-    FIX_POS(curpos.x, PLAYER_RADIUS, onclr::vsize.width - PLAYER_RADIUS);
-    FIX_POS(curpos.y, PLAYER_RADIUS, onclr::vsize.height - PLAYER_RADIUS);
+    FIX_POS(curpos.x, PLAYER_RADIUS, onclr::mapsize.width - PLAYER_RADIUS);
+    FIX_POS(curpos.y, PLAYER_RADIUS, onclr::mapsize.height - PLAYER_RADIUS);
     _player->setPosition(curpos);
+    // Update the location of the container, that is, 'this'.
+    curpos.x = -curpos.x + onclr::vsize.width / 2;
+    curpos.y = -curpos.y + onclr::vsize.height / 2;
+    FIX_POS(curpos.x, onclr::vsize.width - onclr::mapsize.width, 0);
+    FIX_POS(curpos.y, onclr::vsize.height - onclr::mapsize.height, 0);
+    this->setPosition(curpos);
 }
 
 void Gameplay::tick(float dt)
