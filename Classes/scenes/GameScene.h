@@ -14,10 +14,13 @@ public:
 
 protected:
     Bubble *_player;
+    cocos2d::Label *_scoreDisplayer;
+    float _score;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];
 
     void goBack(cocos2d::Ref *sender);
     void moveBall(float acc_x, float acc_y, float dt);
+    void tick(float dt);
 };
 
 #endif

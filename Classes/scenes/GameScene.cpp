@@ -24,6 +24,14 @@ bool Gameplay::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
+    // The score displayer
+    _scoreDisplayer = onclr::label("0 s", 80, false);
+    _scoreDisplayer->setNormalizedPosition(Vec2(0.5, 0.5));
+    _scoreDisplayer->setColor(Color3B::BLACK);
+    _scoreDisplayer->setOpacity(128);
+    this->addChild(_scoreDisplayer);
+    _score = 0.0f;
+
     // The player
     _player = Bubble::create(PLAYER_RADIUS, Color4F(0, 0, 0, 1));
     // Don't use normalized positions here since we need to set absolute position later
@@ -70,6 +78,10 @@ bool Gameplay::init()
     Device::setAccelerometerEnabled(true);
 #endif
 
+    // Turn on score scheduler
+    // this->getScheduler()->schedule(Gameplay::tick, this, 0, false, "GAME_SCORE_TICKER");
+    this->getScheduler()->schedule(schedule_selector(Gameplay::tick), this, 1, false);
+
     return true;
 }
 
@@ -86,6 +98,12 @@ void Gameplay::moveBall(float acc_x, float acc_y, float dt)
     FIX_POS(curpos.x, PLAYER_RADIUS, onclr::vsize.width - PLAYER_RADIUS);
     FIX_POS(curpos.y, PLAYER_RADIUS, onclr::vsize.height - PLAYER_RADIUS);
     _player->setPosition(curpos);
+}
+
+void Gameplay::tick(float dt)
+{
+    _score += dt;
+    _scoreDisplayer->setString(__String::createWithFormat("%d s", (int)_score)->getCString());
 }
 
 // copied from HexBizarre/GameScene
