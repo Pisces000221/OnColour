@@ -1,7 +1,7 @@
 #include "BorderedBubble.h"
 using namespace cocos2d;
 
-bool BorderedBubble::init(float radius, float borderwidth, cocos2d::Color4F colour)
+bool BorderedBubble::init(float radius, float borderwidth, cocos2d::Color3B colour)
 {
     if (!Bubble::init(radius, colour)) return false;
     auto sprite = Sprite::create("images/circle.png");

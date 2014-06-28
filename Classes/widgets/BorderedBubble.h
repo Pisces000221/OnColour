@@ -8,8 +8,8 @@
 class BorderedBubble : public Bubble
 {
 public:
-    bool init(float radius, float borderwidth, cocos2d::Color4F colour);
-    static BorderedBubble *create(float radius, float borderwidth, cocos2d::Color4F colour)
+    bool init(float radius, float borderwidth, cocos2d::Color3B colour);
+    static BorderedBubble *create(float radius, float borderwidth, cocos2d::Color3B colour)
     {
         BorderedBubble *ret = new BorderedBubble();
         ret->init(radius, borderwidth, colour);

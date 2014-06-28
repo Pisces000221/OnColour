@@ -5,9 +5,6 @@
 #include "Global.h"
 using namespace cocos2d;
 
-#define RAND_0_1 ((float)rand() / RAND_MAX)
-#define RAND_C4F cocos2d::Color4F(RAND_0_1, RAND_0_1, RAND_0_1, 1)
-
 bool Startup::init()
 {
     if (!LayerColor::initWithColor(Color4B(255, 255, 255, 255))) return false;
@@ -16,12 +13,15 @@ bool Startup::init()
     auto titleLabel = onclr::label("On Colour", 60, false);
     titleLabel->setNormalizedPosition(Vec2(0.5, 0.8));
     this->addChild(titleLabel);
+    // Random colours
+    int c[3] = { 0, 0, 0 };
+    for (int i = 0; i < 3; i++) c[i] = rand() % 256;
     titleLabel->runAction(Sequence::create(
         DelayTime::create(1),
         TintTo::create(0.5, 0, 0, 0),
-        CallFunc::create([titleLabel]() {
+        CallFunc::create([c, titleLabel]() {
             // Tint 'Colour'
-            auto letterTintAction = TintTo::create(1, rand() % 256, rand() % 256, rand() % 256);
+            auto letterTintAction = TintTo::create(1, c[0], c[1], c[2]);
             for (int i = 3; i < 9; i++) {
                 titleLabel->getLetter(i)->setColor(Color3B::BLACK);
                 titleLabel->getLetter(i)->runAction(letterTintAction->clone());
@@ -29,7 +29,7 @@ bool Startup::init()
         }), nullptr));
 
     // The popping bubble
-    auto bubble = Bubble::create(20, RAND_C4F);
+    auto bubble = Bubble::create(20, Color3B(c[0], c[1], c[2]));
     bubble->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     bubble->setPosition(Vec2(onclr::vsize.width - 4, onclr::vsize.height - 4));
     bubble->setScale(0);

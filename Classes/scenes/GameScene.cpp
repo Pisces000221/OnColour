@@ -48,7 +48,7 @@ bool Gameplay::init()
     _timeToLastBubGen = 0.0f;
 
     // The player
-    _player = BorderedBubble::create(onclr::player_radius, 5, Color4F(1, 1, 1, 1));
+    _player = BorderedBubble::create(onclr::player_radius, 5, Color3B::WHITE);
     // Don't use normalized positions here since we need to set absolute position later
     // What's more, its parent's size is onclr::mapsize!
     _player->setPosition(Vec2(onclr::mapsize.width / 2, onclr::mapsize.height / 2));

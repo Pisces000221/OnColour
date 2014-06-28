@@ -26,10 +26,10 @@ const float player_radius = 30.0f;
 const float bub_minradius = 36.0f;
 const float bub_maxradius = 72.0f;
 const int bubcolourcount = 3;
-const cocos2d::Color4F bubcolours[] = {
-    cocos2d::Color4F(1, 0, 0, 1),
-    cocos2d::Color4F(0, 1, 0, 1),
-    cocos2d::Color4F(0, 0, 1, 1)
+const cocos2d::Color3B bubcolours[] = {
+    cocos2d::Color3B(255, 0, 0),
+    cocos2d::Color3B(0, 255, 0),
+    cocos2d::Color3B(0, 0, 255)
 };
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
