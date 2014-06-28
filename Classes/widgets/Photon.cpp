@@ -1,5 +1,7 @@
 #include "Photon.h"
 
+int Photon::total = 20116;
+
 void Photon::setVelocity(float v, float directionAngle)
 {
     _v = v;

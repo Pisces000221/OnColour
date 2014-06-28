@@ -12,6 +12,7 @@ public:
     {
         Photon *ret = new Photon();
         ret->init(radius, colour);
+        ret->_id = ++total;
         ret->autorelease();
         return ret;
     }
@@ -22,7 +23,8 @@ public:
 
 protected:
     float _v, _direction;
-    int _cval;
+    int _cval, _id;
+    static int total;
 };
 
 #endif

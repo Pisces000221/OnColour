@@ -37,8 +37,6 @@ void Gameplay::init2()
     _scoreDisplayer->setColor(Color3B::BLACK);
     _scoreDisplayer->setOpacity(128);
     scene->addChild(_scoreDisplayer);
-    // XXX: debug use. remove later
-    this->setScale(480.0 / 1200.0);
 }
 
 bool Gameplay::init()
@@ -165,7 +163,32 @@ void Gameplay::tick(float dt)
         _photons.pushBack(b);
         this->addChild(b);
     }
-    for (auto &photon : _photons) photon->move(dt);
+    for (auto &photon : _photons) {
+        photon->move(dt);
+        Vec2 p = photon->getPosition();
+        float r = photon->getRadius();
+        if (p.x < -r || p.x > onclr::mapsize.width + r
+         || p.y < -r || p.y > onclr::mapsize.height + r) {
+            if (photon->getUserData()) ((Sprite *)photon->getUserData())->removeFromParent();
+            _photons.eraseObject(photon);
+        } else if (p.x < _position.x - r || p.x > _position.x + onclr::vsize.width + r
+         || p.y < _position.y - r || p.y > _position.y + onclr::vsize.height + r) {
+            if (photon->getUserData() == 0x0) {
+                auto pointer = Sprite::create("images/pointer.png");
+                photon->setUserData(pointer);
+                pointer->setColor(photon->getColor());
+                this->addChild(pointer);
+            }
+            Sprite *pointer = (Sprite *)photon->getUserData();
+            pointer->runAction(FadeIn::create(0.3f));
+            float pr = pointer->getContentSize().width;
+            FIX_POS(p.x, _position.x + pr, _position.x + onclr::mapsize.width - pr);
+            FIX_POS(p.y, _position.y + pr, _position.y + onclr::mapsize.height - pr);
+            pointer->setPosition(p);
+        } else {
+            if (photon->getUserData()) ((Sprite *)photon->getUserData())->runAction(FadeOut::create(0.3f));
+        }
+    }
 }
 
 // copied from HexBizarre/GameScene
