@@ -37,6 +37,8 @@ void Gameplay::init2()
     _scoreDisplayer->setColor(Color3B::BLACK);
     _scoreDisplayer->setOpacity(128);
     scene->addChild(_scoreDisplayer);
+    // XXX: debug use. remove later
+    this->setScale(480.0 / 1200.0);
 }
 
 bool Gameplay::init()
@@ -135,6 +137,7 @@ void Gameplay::tick(float dt)
     _timeToLastPhotonGen -= dt;
     if (_timeToLastPhotonGen <= 0) {
         _timeToLastPhotonGen = RAND_BTW(onclr::photongen_mintime, onclr::photongen_maxtime);
+        // Generate a photon.
         float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
         int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
         int b_colour_idx = rand() % onclr::photoncolourct;
@@ -142,7 +145,23 @@ void Gameplay::tick(float dt)
         b->setColourValue(b_colourval);
         // for debug use
         b->setVelocity(RAND_BTW_INT(onclr::photon_minvelocity, onclr::photon_maxvelocity), asin(0.7));
-        b->setPosition(_player->getPosition());
+        // Generate a random position tangent to the border
+        // > The radiation is emitted tangent to these trajectories. (Scientific American)
+        if (rand() % 2) {   // top/bottom border
+            b->setPosition(Vec2(
+                RAND_BTW(-b_radius, onclr::mapsize.width + b_radius),
+                rand() % 2 ? onclr::mapsize.height + b_radius : -b_radius));
+        } else {            // left/right border
+            b->setPosition(Vec2(
+                rand() % 2 ? onclr::mapsize.width + b_radius : -b_radius,
+                RAND_BTW(-b_radius, onclr::mapsize.height + b_radius)));
+        }
+        // Generate a random direction that goes into the screen
+        float destX = RAND_BTW(b_radius, onclr::mapsize.width - b_radius);
+        float destY = RAND_BTW(b_radius, onclr::mapsize.height - b_radius);
+        b->setVelocity(RAND_BTW(onclr::photon_minvelocity, onclr::photon_maxvelocity),
+            atan2f(destX - b->getPositionX(), destY - b->getPositionY()));  // why it's x/y??
+        // MY CODE WORKS, I DON'T KNOW WHY
         _photons.pushBack(b);
         this->addChild(b);
     }
