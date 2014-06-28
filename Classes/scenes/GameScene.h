@@ -8,7 +8,7 @@
 class Gameplay : public cocos2d::LayerColor
 {
 public:
-    virtual bool init();  
+    virtual bool init();
     CREATE_FUNC(Gameplay);
     SCENE_FUNC(Gameplay);
 

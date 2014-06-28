@@ -80,8 +80,8 @@ bool Gameplay::init()
 #endif
 
     // Turn on score scheduler
-    // this->getScheduler()->schedule(Gameplay::tick, this, 0, false, "GAME_SCORE_TICKER");
-    this->getScheduler()->schedule(schedule_selector(Gameplay::tick), this, 1, false);
+    this->getScheduler()->schedule(std::bind(&Gameplay::tick, this, std::placeholders::_1),
+        this, 1, false, "GAME_SCORE_TICKER");
 
     return true;
 }
