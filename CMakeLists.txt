@@ -65,6 +65,7 @@ set(GAME_SRC
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
   Classes/widgets/BorderedBubble.cpp
+  Classes/widgets/Photon.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC
@@ -79,6 +80,7 @@ set(GAME_SRC
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
   Classes/widgets/BorderedBubble.cpp
+  Classes/widgets/Photon.cpp
 )
 endif()
 

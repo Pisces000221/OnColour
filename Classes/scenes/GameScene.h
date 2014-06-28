@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "Bubble.h"
 #include "BorderedBubble.h"
+#include "Photon.h"
 
 class Gameplay : public cocos2d::Layer
 {
@@ -27,9 +28,10 @@ protected:
     void init2();
 
     BorderedBubble *_player;
+    cocos2d::Vector<Photon *> _photons;
     cocos2d::Label *_scoreDisplayer;
     float _score;
-    float _timeToLastBubGen;
+    float _timeToLastPhotonGen;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];
 
     void goBack(cocos2d::Ref *sender);

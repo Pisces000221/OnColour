@@ -46,7 +46,7 @@ bool Gameplay::init()
 
     // Reset score
     _score = 0.0f;
-    _timeToLastBubGen = 0.0f;
+    _timeToLastPhotonGen = 0.0f;
 
     // The player
     _player = BorderedBubble::create(onclr::player_radius, 5, Color3B::WHITE);
@@ -100,7 +100,7 @@ bool Gameplay::init()
     //http://blog.csdn.net/qq575787460/article/details/8531397
     // Father-tricking CC_CALLBACK_1...
     this->getScheduler()->schedule(std::bind(&Gameplay::tick, this, std::placeholders::_1),
-        this, 1, false, "GAME_SCORE_TICKER");
+        this, 0, false, "GAME_TICKER");
 
     return true;
 }
@@ -132,18 +132,21 @@ void Gameplay::tick(float dt)
     char s[16]; sprintf(s, "%d s", (int)_score);
     _scoreDisplayer->setString(s);
     // Check if is generating bubble
-    _timeToLastBubGen -= dt;
-    if (_timeToLastBubGen <= 0) {
-        _timeToLastBubGen = RAND_BTW(onclr::bubgen_mintime, onclr::bubgen_maxtime);
-        float b_radius = RAND_BTW(onclr::bub_minradius, onclr::bub_maxradius);
-        int b_colourval = RAND_BTW_INT(onclr::bub_mincolourval, onclr::bub_maxcolourval);
-        int b_colour_idx = rand() % onclr::bubcolourcount;
-        auto b = Bubble::create(b_radius, onclr::bubcolours[b_colour_idx]);
-        b->setOpacity(b_colourval);
+    _timeToLastPhotonGen -= dt;
+    if (_timeToLastPhotonGen <= 0) {
+        _timeToLastPhotonGen = RAND_BTW(onclr::photongen_mintime, onclr::photongen_maxtime);
+        float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
+        int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
+        int b_colour_idx = rand() % onclr::photoncolourct;
+        auto b = Photon::create(b_radius, onclr::photoncolours[b_colour_idx]);
+        b->setColourValue(b_colourval);
         // for debug use
+        b->setVelocity(RAND_BTW_INT(onclr::photon_minvelocity, onclr::photon_maxvelocity), asin(0.7));
         b->setPosition(_player->getPosition());
+        _photons.pushBack(b);
         this->addChild(b);
     }
+    for (auto &photon : _photons) photon->move(dt);
 }
 
 // copied from HexBizarre/GameScene

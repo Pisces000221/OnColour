@@ -20,19 +20,21 @@ namespace onclr {
 extern cocos2d::Size vsize;
 void init();
 const cocos2d::Size mapsize = cocos2d::Size(1200, 800);
-const float bubgen_mintime = 3.0f;
-const float bubgen_maxtime = 6.0f;
+const float photongen_mintime = 3.0f;
+const float photongen_maxtime = 6.0f;
 const float player_radius = 30.0f;
-const float bub_minradius = 36.0f;
-const float bub_maxradius = 72.0f;
-const int bubcolourcount = 3;
-const cocos2d::Color3B bubcolours[] = {
+const float photon_minradius = 36.0f;
+const float photon_maxradius = 72.0f;
+const int photoncolourct = 3;
+const cocos2d::Color3B photoncolours[] = {
     cocos2d::Color3B(255, 0, 0),
     cocos2d::Color3B(0, 255, 0),
     cocos2d::Color3B(0, 0, 255)
 };
-const int bub_mincolourval = 64;
-const int bub_maxcolourval = 255;
+const int photon_mincolourval = 64;
+const int photon_maxcolourval = 255;
+const int photon_minvelocity = 30;
+const int photon_maxvelocity = 120;
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,
