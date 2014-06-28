@@ -44,9 +44,10 @@ bool Gameplay::init()
     listener->onKeyPressed = [this](EventKeyboard::KeyCode key, Event* event) {
         float x = 0, y = 0;
         if (key == EventKeyboard::KeyCode::KEY_UP_ARROW) y = 1;
-        if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -1;
-        if (key == EventKeyboard::KeyCode::KEY_LEFT_ARROW) x = -1;
-        if (key == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) x = 1;
+        else if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -1;
+        else if (key == EventKeyboard::KeyCode::KEY_LEFT_ARROW) x = -1;
+        else if (key == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) x = 1;
+        else return;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
             s_key = KEYBOARD_SCHEDULE_KEY_2;
