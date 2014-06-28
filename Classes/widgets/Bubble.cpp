@@ -6,7 +6,8 @@ bool Bubble::init(float radius, cocos2d::Color3B colour)
     if (!Node::init()) return false;
     _radius = radius;
     this->setContentSize(Size(radius * 2, radius * 2));
-    _sprite = Sprite::create("images/circle.png");
+    if (radius <= 48) _sprite = Sprite::create("images/circle.png");
+    else _sprite = Sprite::create("images/circle_2x.png");
     _sprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
     _sprite->setPosition(Vec2::ZERO);
     _sprite->setScale(2 * radius / _sprite->getContentSize().width);

@@ -31,6 +31,8 @@ const cocos2d::Color3B bubcolours[] = {
     cocos2d::Color3B(0, 255, 0),
     cocos2d::Color3B(0, 0, 255)
 };
+const int bub_mincolourval = 64;
+const int bub_maxcolourval = 255;
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,

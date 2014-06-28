@@ -7,6 +7,7 @@ using namespace cocos2d;
 
 #define RAND_0_1 ((float)rand() / RAND_MAX)
 #define RAND_BTW(_min, _max) (RAND_0_1 * (_max - _min) + _min)
+#define RAND_BTW_INT(_min, _max) (rand() % (_max - _min) + _min)    // [_min, max)
 #define FIX_POS(_pos, _min, _max) \
     if (_pos < (_min)) _pos = (_min); else if (_pos > (_max)) _pos = (_max)
 // maximum supported keys to be pressed at once: 2
@@ -135,9 +136,10 @@ void Gameplay::tick(float dt)
     if (_timeToLastBubGen <= 0) {
         _timeToLastBubGen = RAND_BTW(onclr::bubgen_mintime, onclr::bubgen_maxtime);
         float b_radius = RAND_BTW(onclr::bub_minradius, onclr::bub_maxradius);
-        CCLOG("Bubble [%.2f] generated. Next will be in %.3f seconds", b_radius, _timeToLastBubGen);
+        int b_colourval = RAND_BTW_INT(onclr::bub_mincolourval, onclr::bub_maxcolourval);
         int b_colour_idx = rand() % onclr::bubcolourcount;
         auto b = Bubble::create(b_radius, onclr::bubcolours[b_colour_idx]);
+        b->setOpacity(b_colourval);
         // for debug use
         b->setPosition(_player->getPosition());
         this->addChild(b);
