@@ -23,6 +23,7 @@ const cocos2d::Size mapsize = cocos2d::Size(1200, 800);
 const float photongen_mintime = 3.0f;
 const float photongen_maxtime = 6.0f;
 const float player_radius = 30.0f;
+const float player_colour_lost = 8.0f;
 const float photon_minradius = 36.0f;
 const float photon_maxradius = 72.0f;
 const int photoncolourct = 3;

@@ -52,6 +52,7 @@ bool Gameplay::init()
     _score = 0.0f;
     _timeToLastPhotonGen = _photonHugTime = 0.0f;
     _photonHugID = 0;
+    _r = _g = _b = 255.0f;
 
     // The player
     _player = BorderedBubble::create(onclr::player_radius, 3, Color3B::WHITE);
@@ -136,6 +137,16 @@ void Gameplay::tick(float dt)
     _score += dt;
     char s[16]; sprintf(s, "%d s", (int)_score);
     _scoreDisplayer->setString(s);
+    // Update colour
+    float deltaclr = onclr::player_colour_lost * dt;
+    _r -= deltaclr; _g -= deltaclr; _b -= deltaclr;
+    if (_r <= 0 || _g <= 0 || _b <= 0) {
+        // TODO: end game
+        if (_r <= 0) _r = 0;
+        if (_g <= 0) _g = 0;
+        if (_b <= 0) _b = 0;
+    }
+    _player->setColor(Color3B((int)_r, (int)_g, (int)_b));
     // Check if is generating bubble
     _timeToLastPhotonGen -= dt;
     if (_timeToLastPhotonGen <= 0) {
@@ -180,6 +191,15 @@ void Gameplay::generatePhoton()
     this->addChild(b);
 }
 
+void Gameplay::removePhoton(Photon *photon)
+{
+    if (photon->getUserData())
+        ((Sprite *)photon->getUserData())->runAction(Sequence::create(
+            FadeOut::create(0.3f),
+            RemoveSelf::create(), nullptr));
+    _photons.eraseObject(photon);
+}
+
 // Move photons and show pointers
 // A little complicated code...
 // Let it go. The code never bothered me anyway.
@@ -193,11 +213,7 @@ void Gameplay::movePhotonsAndShowPointers(float dt)
         if (p.x < -r || p.x > onclr::mapsize.width + r
          || p.y < -r || p.y > onclr::mapsize.height + r) {
             // Timber!!
-            if (photon->getUserData())
-                ((Sprite *)photon->getUserData())->runAction(Sequence::create(
-                    FadeOut::create(0.3f),
-                    RemoveSelf::create(), nullptr));
-            _photons.eraseObject(photon);
+            this->removePhoton(photon);
         } else if (p.x < -_position.x - r || p.x > -_position.x + onclr::vsize.width + r
          || p.y < -_position.y - r || p.y > -_position.y + onclr::vsize.height + r) {
             // We need a pointer to point at it
@@ -279,6 +295,24 @@ void Gameplay::checkHugs(float dt)
                 _photonHugTime += dt;
                 if (_photonHugTime > photon->getHugTime()) {
                     _photonHugTime = photon->getHugTime();
+                    // Let's eat this ;)
+                    photon->runAction(Sequence::create(
+                        ScaleTo::create(0.25, 0),
+                        RemoveSelf::create(), nullptr));
+                    _player->runAction(EaseElasticOut::create(
+                        ScaleTo::create(0.5, 1)));
+                    _player->reset(0.2);
+                    // If we eat something, we get energy, huh?
+                    Color3B c = photon->getColor();
+                    int cval = photon->getColourValue();
+                    _r += (float)(c.r * cval) / 255.0;
+                    _g += (float)(c.g * cval) / 255.0;
+                    _b += (float)(c.b * cval) / 255.0;
+                    if (_r > 255) _r = 255;
+                    if (_g > 255) _g = 255;
+                    if (_b > 255) _b = 255;
+                    // Remove finally. Otherwise it causes wrong results
+                    this->removePhoton(photon);
                 }
                 _player->setBorderProgress(1 - _photonHugTime / photon->getHugTime());
             }

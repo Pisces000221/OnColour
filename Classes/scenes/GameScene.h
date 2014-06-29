@@ -28,6 +28,7 @@ protected:
     void init2();
     // Randomly generates a photon
     void generatePhoton();
+    void removePhoton(Photon *photon);
     void movePhotonsAndShowPointers(float dt);
     void checkHugs(float dt);
     bool huggy(Photon *photon);
@@ -42,6 +43,7 @@ protected:
     // Player-related data
     int _photonHugID;
     float _photonHugTime;
+    float _r, _g, _b;
 
     void goBack(cocos2d::Ref *sender);
     void moveBall(float acc_x, float acc_y, float dt);

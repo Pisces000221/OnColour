@@ -22,6 +22,7 @@ void BorderedBubble::setBorderProgress(float prog)
 
 void BorderedBubble::reset(float anim_time)
 {
+    if (this->getScheduler()->isScheduled("B.BUBBLE_RESET_TICK", this)) return;
     float startProg = _border->getPercentage() / 100.0;
     anim_time *= (1 - startProg);
     _animPastTime = 0;

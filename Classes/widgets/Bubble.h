@@ -15,7 +15,7 @@ public:
         ret->autorelease();
         return ret;
     }
-    void setColor(cocos2d::Color3B colour);
+    inline void setColor(cocos2d::Color3B colour) { _sprite->setColor(colour); }
     inline cocos2d::Color3B getColor() { return _sprite->getColor(); }
     inline float getRadius() { return _radius; }
     inline float getRadiusSq() { return _radius * _radius; }

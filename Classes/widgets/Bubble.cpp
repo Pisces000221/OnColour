@@ -16,5 +16,3 @@ bool Bubble::init(float radius, cocos2d::Color3B colour)
     this->setColor(colour);
     return true;
 }
-
-void Bubble::setColor(cocos2d::Color3B colour) { _sprite->setColor(colour); }
