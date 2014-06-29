@@ -16,14 +16,18 @@ public:
         ret->autorelease();
         return ret;
     }
+    int getID() { return _id; }
     // @params directionAngle The angle, in a nutshell, arctan(k).
     void setVelocity(float v, float directionAngle);
     void setColourValue(int val);
     int getColourValue();
+    void setHugTime(float hugTime) { _hugTime = hugTime; }
+    float getHugTime() { return _hugTime; }
     void move(float dt);
 
 protected:
     float _v, _direction;
+    float _hugTime;
     int _cval, _id;
     static int total;
 };

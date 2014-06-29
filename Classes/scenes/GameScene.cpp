@@ -8,8 +8,12 @@ using namespace cocos2d;
 #define RAND_0_1 ((float)rand() / RAND_MAX)
 #define RAND_BTW(_min, _max) (RAND_0_1 * (_max - _min) + _min)
 #define RAND_BTW_INT(_min, _max) (rand() % (_max - _min) + _min)    // [_min, max)
+#define RAND_RATE(_val, _min, _max, _min2, _max2) \
+    (((_val - _min) / (_max - _min)) * (_max2 - _min2) + _min2)
+
 #define FIX_POS(_pos, _min, _max) \
     if (_pos < (_min)) _pos = (_min); else if (_pos > (_max)) _pos = (_max)
+
 // maximum supported keys to be pressed at once: 2
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
 #define KEYBOARD_SCHEDULE_KEY_2 "KEYBD_BALLMOVE_SECOND"
@@ -29,14 +33,14 @@ void Gameplay::init2()
     backItem->setNormalizedPosition(Vec2::ANCHOR_TOP_LEFT);
     auto menu = Menu::create(backItem, NULL);
     menu->setPosition(Vec2::ZERO);
-    scene->addChild(menu);
+    scene->addChild(menu, 6);
 
     // The score displayer
     _scoreDisplayer = onclr::label("0 s", 80, false);
     _scoreDisplayer->setNormalizedPosition(Vec2(0.5, 0.5));
     _scoreDisplayer->setColor(Color3B::BLACK);
     _scoreDisplayer->setOpacity(128);
-    scene->addChild(_scoreDisplayer);
+    scene->addChild(_scoreDisplayer, 8);
 }
 
 bool Gameplay::init()
@@ -44,12 +48,13 @@ bool Gameplay::init()
     if (!Layer::init()) return false;
     this->setContentSize(onclr::mapsize);
 
-    // Reset score
+    // Reset score, time, etc.
     _score = 0.0f;
-    _timeToLastPhotonGen = 0.0f;
+    _timeToLastPhotonGen = _photonHugTime = 0.0f;
+    _photonHugID = 0;
 
     // The player
-    _player = BorderedBubble::create(onclr::player_radius, 5, Color3B::WHITE);
+    _player = BorderedBubble::create(onclr::player_radius, 3, Color3B::WHITE);
     // Don't use normalized positions here since we need to set absolute position later
     // What's more, its parent's size is onclr::mapsize!
     _player->setPosition(Vec2(onclr::mapsize.width / 2, onclr::mapsize.height / 2));
@@ -136,35 +141,50 @@ void Gameplay::tick(float dt)
     if (_timeToLastPhotonGen <= 0) {
         _timeToLastPhotonGen = RAND_BTW(onclr::photongen_mintime, onclr::photongen_maxtime);
         // Generate a photon.
-        float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
-        int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
-        int b_colour_idx = rand() % onclr::photoncolourct;
-        auto b = Photon::create(b_radius, onclr::photoncolours[b_colour_idx]);
-        b->setColourValue(b_colourval);
-        // for debug use
-        b->setVelocity(RAND_BTW_INT(onclr::photon_minvelocity, onclr::photon_maxvelocity), asin(0.7));
-        // Generate a random position tangent to the border
-        // > The radiation is emitted tangent to these trajectories. (Scientific American)
-        if (rand() % 2) {   // top/bottom border
-            b->setPosition(Vec2(
-                RAND_BTW(-b_radius, onclr::mapsize.width + b_radius),
-                rand() % 2 ? onclr::mapsize.height + b_radius : -b_radius));
-        } else {            // left/right border
-            b->setPosition(Vec2(
-                rand() % 2 ? onclr::mapsize.width + b_radius : -b_radius,
-                RAND_BTW(-b_radius, onclr::mapsize.height + b_radius)));
-        }
-        // Generate a random direction that goes into the screen
-        float destX = RAND_BTW(b_radius, onclr::mapsize.width - b_radius);
-        float destY = RAND_BTW(b_radius, onclr::mapsize.height - b_radius);
-        b->setVelocity(RAND_BTW(onclr::photon_minvelocity, onclr::photon_maxvelocity),
-            atan2f(destX - b->getPositionX(), destY - b->getPositionY()));  // why it's x/y??
-        // MY CODE WORKS, I DON'T KNOW WHY
-        _photons.pushBack(b);
-        this->addChild(b);
+        this->generatePhoton();
     }
-    // A little complicated code...
-    // Let it go. The code never bothered me anyway.
+    this->movePhotonsAndShowPointers(dt);
+    this->checkHugs(dt);
+}
+
+void Gameplay::generatePhoton()
+{
+    float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
+    int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
+    int b_colour_idx = rand() % onclr::photoncolourct;
+    float b_hugtime = RAND_RATE(b_radius, 
+        onclr::photon_minradius, onclr::photon_maxradius,
+        onclr::photon_minhugtime, onclr::photon_maxhugtime);
+    auto b = Photon::create(b_radius, onclr::photoncolours[b_colour_idx]);
+    b->setColourValue(b_colourval);
+    b->setHugTime(b_hugtime);
+    b->setVelocity(RAND_BTW_INT(onclr::photon_minvelocity, onclr::photon_maxvelocity), asin(0.7));
+    // Generate a random position tangent to the border
+    // > The radiation is emitted tangent to these trajectories. (Scientific American)
+    if (rand() % 2) {   // top/bottom border
+        b->setPosition(Vec2(
+            RAND_BTW(-b_radius, onclr::mapsize.width + b_radius),
+            rand() % 2 ? onclr::mapsize.height + b_radius : -b_radius));
+    } else {            // left/right border
+        b->setPosition(Vec2(
+            rand() % 2 ? onclr::mapsize.width + b_radius : -b_radius,
+            RAND_BTW(-b_radius, onclr::mapsize.height + b_radius)));
+    }
+    // Generate a random direction that goes into the screen
+    float destX = RAND_BTW(b_radius, onclr::mapsize.width - b_radius);
+    float destY = RAND_BTW(b_radius, onclr::mapsize.height - b_radius);
+    b->setVelocity(RAND_BTW(onclr::photon_minvelocity, onclr::photon_maxvelocity),
+        atan2f(destX - b->getPositionX(), destY - b->getPositionY()));  // why it's x/y??
+    // MY CODE WORKS, I DON'T KNOW WHY
+    _photons.pushBack(b);
+    this->addChild(b);
+}
+
+// Move photons and show pointers
+// A little complicated code...
+// Let it go. The code never bothered me anyway.
+void Gameplay::movePhotonsAndShowPointers(float dt)
+{
     for (auto &photon : _photons) {
         photon->move(dt);
         Vec2 p = photon->getPosition();
@@ -201,7 +221,6 @@ void Gameplay::tick(float dt)
             }
             // Determine the position of the pointer
             Vec2 delta_p = p - p0;
-            //CCLOG("delta_p = (%.3f, %.3f)", delta_p.x, delta_p.y);
             pointer->setRotation(-atan2f(delta_p.y, delta_p.x) / M_PI * 180);
             float pw = pointer->getContentSize().width;
             Vec2 pointer_p = Vec2::ZERO;
@@ -236,7 +255,6 @@ void Gameplay::tick(float dt)
             FIX_POS(final_p.x, pw / 2, onclr::vsize.width - pw / 2);
             FIX_POS(final_p.y, pw / 2, onclr::vsize.height - pw / 2);
             pointer->setPosition(final_p);
-            //pointer->setAnchorPoint(pointer_anchor);
         } else {
             // It's in the screen
             Sprite *pointer = (Sprite *)photon->getUserData();
@@ -246,6 +264,40 @@ void Gameplay::tick(float dt)
             }
         }
     }
+}
+
+void Gameplay::checkHugs(float dt)
+{
+    bool hugged = false;
+    if (_photonHugID > 0) {
+        for (auto &photon : _photons) if (photon->getID() == _photonHugID) {
+            if (!huggy(photon)) { // got out
+                hugged = false;
+                _player->reset(0.7);
+            } else {
+                hugged = true;
+                _photonHugTime += dt;
+                if (_photonHugTime > photon->getHugTime()) {
+                    _photonHugTime = photon->getHugTime();
+                }
+                _player->setBorderProgress(1 - _photonHugTime / photon->getHugTime());
+            }
+            break;
+        }
+    } else for (auto &photon : _photons) {
+        if (huggy(photon)) {
+            _photonHugID = photon->getID();
+            _photonHugTime = 0.0;
+            hugged = true; break;
+        }
+    }
+    if (!hugged) _photonHugID = -1;
+}
+
+bool Gameplay::huggy(Photon *photon)
+{
+    float r = (photon->getRadius() - onclr::player_radius);
+    return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
 }
 
 // copied from HexBizarre/GameScene

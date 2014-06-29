@@ -16,10 +16,12 @@ public:
         ret->autorelease();
         return ret;
     }
-    void setBorderProgress(float prog); // prog in [0, 100]
+    void setBorderProgress(float prog); // prog in [0, 1]
+    void reset(float anim_time);
 
 protected:
     cocos2d::ProgressTimer *_border;
+    float _animPastTime;
 };
 
 #endif

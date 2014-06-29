@@ -17,5 +17,20 @@ bool BorderedBubble::init(float radius, float borderwidth, cocos2d::Color3B colo
 
 void BorderedBubble::setBorderProgress(float prog)
 {
-    _border->setPercentage(prog);
+    _border->setPercentage(prog * 100);
+}
+
+void BorderedBubble::reset(float anim_time)
+{
+    float startProg = _border->getPercentage() / 100.0;
+    anim_time *= (1 - startProg);
+    _animPastTime = 0;
+    this->getScheduler()->schedule([&, anim_time, startProg](float dt) {
+        _animPastTime += dt;
+        if (_animPastTime >= anim_time) {
+            _animPastTime = anim_time;
+            this->getScheduler()->unschedule("B.BUBBLE_RESET_TICK", this);
+        }
+        this->setBorderProgress(startProg + (1 - startProg) * _animPastTime / anim_time);
+    }, this, 0, false, "B.BUBBLE_RESET_TICK");
 }

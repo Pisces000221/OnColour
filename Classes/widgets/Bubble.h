@@ -18,6 +18,7 @@ public:
     void setColor(cocos2d::Color3B colour);
     inline cocos2d::Color3B getColor() { return _sprite->getColor(); }
     inline float getRadius() { return _radius; }
+    inline float getRadiusSq() { return _radius * _radius; }
 
 protected:
     float _radius;

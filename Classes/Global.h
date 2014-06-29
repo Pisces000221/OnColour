@@ -35,6 +35,8 @@ const int photon_mincolourval = 64;
 const int photon_maxcolourval = 255;
 const int photon_minvelocity = 30;
 const int photon_maxvelocity = 120;
+const float photon_minhugtime = 3.0f;
+const float photon_maxhugtime = 5.0f;
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,
