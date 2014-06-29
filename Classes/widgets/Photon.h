@@ -19,6 +19,7 @@ public:
     // @params directionAngle The angle, in a nutshell, arctan(k).
     void setVelocity(float v, float directionAngle);
     void setColourValue(int val);
+    int getColourValue();
     void move(float dt);
 
 protected:

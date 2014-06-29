@@ -163,30 +163,87 @@ void Gameplay::tick(float dt)
         _photons.pushBack(b);
         this->addChild(b);
     }
+    // A little complicated code...
+    // Let it go. The code never bothered me anyway.
     for (auto &photon : _photons) {
         photon->move(dt);
         Vec2 p = photon->getPosition();
+        Vec2 p0 = -_position + Vec2(onclr::vsize.width * 0.5, onclr::vsize.height * 0.5);
         float r = photon->getRadius();
         if (p.x < -r || p.x > onclr::mapsize.width + r
          || p.y < -r || p.y > onclr::mapsize.height + r) {
-            if (photon->getUserData()) ((Sprite *)photon->getUserData())->removeFromParent();
+            // Timber!!
+            if (photon->getUserData())
+                ((Sprite *)photon->getUserData())->runAction(Sequence::create(
+                    FadeOut::create(0.3f),
+                    RemoveSelf::create(), nullptr));
             _photons.eraseObject(photon);
-        } else if (p.x < _position.x - r || p.x > _position.x + onclr::vsize.width + r
-         || p.y < _position.y - r || p.y > _position.y + onclr::vsize.height + r) {
+        } else if (p.x < -_position.x - r || p.x > -_position.x + onclr::vsize.width + r
+         || p.y < -_position.y - r || p.y > -_position.y + onclr::vsize.height + r) {
+            // We need a pointer to point at it
+            // Ensure that there IS a pointer to use
             if (photon->getUserData() == 0x0) {
                 auto pointer = Sprite::create("images/pointer.png");
                 photon->setUserData(pointer);
                 pointer->setColor(photon->getColor());
-                this->addChild(pointer);
+                pointer->setOpacity(0); // we~ will~ we~ will~ fade you!
+                pointer->runAction(FadeTo::create(0.3, photon->getColourValue()));
+                pointer->setTag(photon->getColourValue());
+                this->getScene()->addChild(pointer);
             }
             Sprite *pointer = (Sprite *)photon->getUserData();
-            pointer->runAction(FadeIn::create(0.3f));
-            float pr = pointer->getContentSize().width;
-            FIX_POS(p.x, _position.x + pr, _position.x + onclr::mapsize.width - pr);
-            FIX_POS(p.y, _position.y + pr, _position.y + onclr::mapsize.height - pr);
-            pointer->setPosition(p);
+            if (pointer->getUserData()) {
+                // The user data of pointers is used to determine whether to fade it
+                // We use it as a boolean value
+                pointer->setUserData(0x0);
+                // The tag sof pointers are used for storing the initial opacity
+                pointer->runAction(FadeTo::create(0.3f, pointer->getTag()));
+            }
+            // Determine the position of the pointer
+            Vec2 delta_p = p - p0;
+            //CCLOG("delta_p = (%.3f, %.3f)", delta_p.x, delta_p.y);
+            pointer->setRotation(-atan2f(delta_p.y, delta_p.x) / M_PI * 180);
+            float pw = pointer->getContentSize().width;
+            Vec2 pointer_p = Vec2::ZERO;
+            Vec2 pointer_anchor = Vec2::ZERO;
+            // 0, 1, 2, 3 = BL, BR, TR, TL
+            // [3] ---------- [2]
+            //  |              |
+            //  |    SCREEN    |
+            //  |              |
+            // [0] ---------- [1]
+            Vec2 cornerInMap[4] = {
+                -_position,
+                -_position + Vec2(onclr::vsize.width, 0),
+                -_position + Vec2(onclr::vsize.width, onclr::vsize.height),
+                -_position + Vec2(0, onclr::vsize.height)
+            };
+            if (Vec2::isSegmentIntersect(cornerInMap[0], cornerInMap[1], p, p0)) {
+                pointer_p = Vec2::getIntersectPoint(cornerInMap[0], cornerInMap[1], p, p0);
+                pointer_anchor = Vec2::ANCHOR_MIDDLE_BOTTOM;
+            } else if (Vec2::isSegmentIntersect(cornerInMap[1], cornerInMap[2], p, p0)) {
+                pointer_p = Vec2::getIntersectPoint(cornerInMap[1], cornerInMap[2], p, p0);
+                pointer_anchor = Vec2::ANCHOR_MIDDLE_RIGHT;
+            } else if (Vec2::isSegmentIntersect(cornerInMap[2], cornerInMap[3], p, p0)) {
+                pointer_p = Vec2::getIntersectPoint(cornerInMap[2], cornerInMap[3], p, p0);
+                pointer_anchor = Vec2::ANCHOR_MIDDLE_TOP;
+            } else {
+                pointer_p = Vec2::getIntersectPoint(cornerInMap[3], cornerInMap[0], p, p0);
+                pointer_anchor = Vec2::ANCHOR_MIDDLE_LEFT;
+            }
+            Vec2 final_p = pointer_p + _position -
+                (pointer_anchor - Vec2::ANCHOR_MIDDLE) * pw;
+            FIX_POS(final_p.x, pw / 2, onclr::vsize.width - pw / 2);
+            FIX_POS(final_p.y, pw / 2, onclr::vsize.height - pw / 2);
+            pointer->setPosition(final_p);
+            //pointer->setAnchorPoint(pointer_anchor);
         } else {
-            if (photon->getUserData()) ((Sprite *)photon->getUserData())->runAction(FadeOut::create(0.3f));
+            // It's in the screen
+            Sprite *pointer = (Sprite *)photon->getUserData();
+            if (pointer && !pointer->getUserData()) {
+                pointer->setUserData((void *)0x5f3759df);
+                pointer->runAction(FadeOut::create(0.3f));
+            }
         }
     }
 }
@@ -200,7 +257,7 @@ void Gameplay::goBack(Ref *sender)
 #endif
     // Run animation
     auto cover = LayerColor::create(Color4B::WHITE);
-    this->addChild(cover, INT_MAX);
+    this->getScene()->addChild(cover, INT_MAX);
     cover->setOpacity(0);
     cover->runAction(Sequence::create(
         FadeIn::create(0.4),

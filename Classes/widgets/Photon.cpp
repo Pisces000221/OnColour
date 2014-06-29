@@ -14,6 +14,11 @@ void Photon::setColourValue(int val)
     _sprite->setOpacity(val);
 }
 
+int Photon::getColourValue()
+{
+    return _sprite->getOpacity();
+}
+
 void Photon::move(float dt)
 {
     setPosition(getPosition() + cocos2d::Vec2(_v * sin(_direction), _v * cos(_direction)) * dt);
