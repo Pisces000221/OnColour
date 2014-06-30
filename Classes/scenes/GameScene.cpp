@@ -53,10 +53,10 @@ void Gameplay::init2()
     scene->addChild(_scoreDisplayer, 8);
     // The warner
     for (int i = 0; i < 3; i++) {
+        _warnerPlaceAvailable[i] = true;
         _warner[i] = onclr::label(_warnMessage[i], 40, false);
         _warner[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-        _warner[i]->setPosition(Vec2(
-            onclr::vsize.width * 0.5, onclr::vsize.height * 0.5 - 40 * i));
+        _warner[i]->setPosition(Vec2::ZERO);
         _warner[i]->setOpacity(0);
         _warner[i]->setColor(_warnColours[i]);
         scene->addChild(_warner[i], 8);
@@ -190,9 +190,11 @@ void Gameplay::tick(float dt)
         if (!_warnerShown[i] && isWarn) {
             _warner[i]->runAction(FadeTo::create(0.3, 128));
             _warnerShown[i] = true;
+            _warner[i]->setPosition(getWarnerPlaceAvailable());
         } else if (_warnerShown[i] && !isWarn) {
             _warner[i]->runAction(FadeOut::create(0.3));
             _warnerShown[i] = false;
+            freeWarnerPlace(_warner[i]->getPosition());
         }
     }
     // Check if is generating bubble
@@ -409,4 +411,24 @@ void Gameplay::pauseOrResume()
         ENSURE_UNSCHEDULED(scheduler, KEYBOARD_SCHEDULE_KEY);
         ENSURE_UNSCHEDULED(scheduler, KEYBOARD_SCHEDULE_KEY_2);
     }
+}
+
+Vec2 Gameplay::getWarnerPlaceAvailable()
+{
+    for (int i = 0; i < 3; i++)
+        if (_warnerPlaceAvailable[i]) {
+            _warnerPlaceAvailable[i] = false;
+            return Vec2(onclr::vsize.width * 0.5, onclr::vsize.height * 0.5 - 40 * i);
+        }
+    return Vec2::ZERO;
+}
+
+void Gameplay::freeWarnerPlace(cocos2d::Vec2 p)
+{
+    for (int i = 0; i < 3; i++)
+        if (p.fuzzyEquals(Vec2(onclr::vsize.width * 0.5,
+         onclr::vsize.height * 0.5 - 40 * i), 5)) {
+            _warnerPlaceAvailable[i] = true;
+            break;
+        }
 }

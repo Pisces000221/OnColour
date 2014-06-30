@@ -38,6 +38,7 @@ protected:
     cocos2d::Label *_scoreDisplayer;
     cocos2d::Label *_warner[3];
     bool _warnerShown[3];
+    bool _warnerPlaceAvailable[3];
     static const cocos2d::Color3B _warnColours[3];
     static const char *_warnMessage[3];
     float _score;
@@ -53,6 +54,8 @@ protected:
     void pauseOrResume();
     void moveBall(float acc_x, float acc_y, float dt);
     void tick(float dt);
+    cocos2d::Vec2 getWarnerPlaceAvailable();
+    void freeWarnerPlace(cocos2d::Vec2 p);
 };
 
 #endif
