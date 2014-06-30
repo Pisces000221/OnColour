@@ -372,9 +372,11 @@ void Gameplay::checkHugs(float dt)
                     this->removePhoton(photon);
                 }
                 float deltaclr = onclr::player_colour_lost * dt;
-                _r += (float)c.r * deltaclr / 510.0;
-                _g += (float)c.g * deltaclr / 510.0;
-                _b += (float)c.b * deltaclr / 510.0;
+                // The colour lose 2/3 slower when hugging
+                // Magic of love?
+                _r += (float)c.r * deltaclr / 765.0;
+                _g += (float)c.g * deltaclr / 765.0;
+                _b += (float)c.b * deltaclr / 765.0;
                 _player->setBorderProgress(1 - _photonHugTime / photon->getHugTime());
             }
             break;
