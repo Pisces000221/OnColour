@@ -46,6 +46,7 @@ protected:
     float _r, _g, _b;
 
     void goBack(cocos2d::Ref *sender);
+    void pauseOrResume();
     void moveBall(float acc_x, float acc_y, float dt);
     void tick(float dt);
 };

@@ -17,6 +17,7 @@ using namespace cocos2d;
 // maximum supported keys to be pressed at once: 2
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
 #define KEYBOARD_SCHEDULE_KEY_2 "KEYBD_BALLMOVE_SECOND"
+#define TICK_SCHEDULE_KEY "GAME_TICKER"
 
 void Gameplay::init2()
 {
@@ -65,6 +66,7 @@ bool Gameplay::init()
     // Enable 'tilting' by keyboard
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode key, Event* event) {
+        if (this->getScheduler()->isTargetPaused(this)) return;
         float x = 0, y = 0;
         if (key == EventKeyboard::KeyCode::KEY_UP_ARROW) y = 1;
         else if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -1;
@@ -84,6 +86,7 @@ bool Gameplay::init()
         }, this, 0, false, s_key);
     };
     listener->onKeyReleased = [this](EventKeyboard::KeyCode key, Event* event) {
+        if (this->getScheduler()->isTargetPaused(this)) return;
         if (pressedKeys[0] == key)
             this->getScheduler()->unschedule(KEYBOARD_SCHEDULE_KEY, this);
         else
@@ -102,11 +105,24 @@ bool Gameplay::init()
     Device::setAccelerometerEnabled(true);
 #endif
 
+    // Touch to pause/resume
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->setSwallowTouches(true);
+    touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
+        return true;
+    };
+    touchListener->onTouchMoved = [this](Touch *touch, Event *event) {
+    };
+    touchListener->onTouchEnded = [this](Touch *touch, Event *event) {
+        this->pauseOrResume();
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+
     // Turn on score scheduler
     //http://blog.csdn.net/qq575787460/article/details/8531397
     // Father-tricking CC_CALLBACK_1...
     this->getScheduler()->schedule(std::bind(&Gameplay::tick, this, std::placeholders::_1),
-        this, 0, false, "GAME_TICKER");
+        this, 0, false, TICK_SCHEDULE_KEY);
 
     return true;
 }
@@ -348,4 +364,14 @@ void Gameplay::goBack(Ref *sender)
     cover->runAction(Sequence::create(
         FadeIn::create(0.4),
         CallFunc::create([]() { Director::getInstance()->popScene(); }), nullptr));
+}
+
+void Gameplay::pauseOrResume()
+{
+    if (this->getScheduler()->isTargetPaused(this)) {
+        this->getScheduler()->resumeTarget(this);
+    } else {
+        _scoreDisplayer->setString("Paused");
+        this->getScheduler()->pauseTarget(this);
+    }
 }
