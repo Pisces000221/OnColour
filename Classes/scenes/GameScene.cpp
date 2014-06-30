@@ -13,6 +13,8 @@ using namespace cocos2d;
 
 #define FIX_POS(_pos, _min, _max) \
     if (_pos < (_min)) _pos = (_min); else if (_pos > (_max)) _pos = (_max)
+#define ENSURE_UNSCHEDULED(_scheduler, _key) \
+    if (_scheduler->isScheduled(_key, this)) _scheduler->unschedule(_key, this)
 
 // maximum supported keys to be pressed at once: 2
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
@@ -368,10 +370,13 @@ void Gameplay::goBack(Ref *sender)
 
 void Gameplay::pauseOrResume()
 {
-    if (this->getScheduler()->isTargetPaused(this)) {
-        this->getScheduler()->resumeTarget(this);
+    auto scheduler = this->getScheduler();
+    if (scheduler->isTargetPaused(this)) {
+        scheduler->resumeTarget(this);
     } else {
         _scoreDisplayer->setString("Paused");
-        this->getScheduler()->pauseTarget(this);
+        scheduler->pauseTarget(this);
+        ENSURE_UNSCHEDULED(scheduler, KEYBOARD_SCHEDULE_KEY);
+        ENSURE_UNSCHEDULED(scheduler, KEYBOARD_SCHEDULE_KEY_2);
     }
 }
