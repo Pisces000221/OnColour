@@ -9,7 +9,7 @@ const Color3B Gameplay::_warnColours[] = {
     Color3B(255, 0, 0), Color3B(0, 255, 0), Color3B(0, 0, 255)
 };
 const char *Gameplay::_warnMessage[] = {
-    "Off colour: red", "Off colour: green", "Off colour: blue"
+    "* Off colour: red *", "* Off colour: green *", "* Off colour: blue *"
 };
 
 #define RAND_0_1 ((float)rand() / RAND_MAX)
@@ -27,6 +27,9 @@ const char *Gameplay::_warnMessage[] = {
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
 #define KEYBOARD_SCHEDULE_KEY_2 "KEYBD_BALLMOVE_SECOND"
 #define TICK_SCHEDULE_KEY "GAME_TICKER"
+
+#define WARNER_POS(i) cocos2d::Vec2( \
+    onclr::vsize.width * 0.5, onclr::vsize.height * 0.5 - 32 * i - 40)
 
 void Gameplay::init2()
 {
@@ -54,7 +57,7 @@ void Gameplay::init2()
     // The warner
     for (int i = 0; i < 3; i++) {
         _warnerPlaceAvailable[i] = true;
-        _warner[i] = onclr::label(_warnMessage[i], 40, false);
+        _warner[i] = onclr::label(_warnMessage[i], 32, false);
         _warner[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
         _warner[i]->setPosition(Vec2::ZERO);
         _warner[i]->setOpacity(0);
@@ -73,6 +76,7 @@ bool Gameplay::init()
     _timeToLastPhotonGen = _photonHugTime = 0.0f;
     _photonHugID = 0;
     _r = _g = _b = 255.0f;
+    _gamePaused = false;
 
     // The player
     _player = BorderedBubble::create(onclr::player_radius, 3, Color3B::WHITE);
@@ -85,7 +89,7 @@ bool Gameplay::init()
     // Enable 'tilting' by keyboard
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [this](EventKeyboard::KeyCode key, Event* event) {
-        if (this->getScheduler()->isTargetPaused(this)) return;
+        if (_gamePaused) return;
         float x = 0, y = 0;
         if (key == EventKeyboard::KeyCode::KEY_UP_ARROW) y = 1;
         else if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -1;
@@ -105,7 +109,7 @@ bool Gameplay::init()
         }, this, 0, false, s_key);
     };
     listener->onKeyReleased = [this](EventKeyboard::KeyCode key, Event* event) {
-        if (this->getScheduler()->isTargetPaused(this)) return;
+        if (_gamePaused) return;
         if (pressedKeys[0] == key)
             this->getScheduler()->unschedule(KEYBOARD_SCHEDULE_KEY, this);
         else
@@ -116,7 +120,7 @@ bool Gameplay::init()
     // Enable accelerating
     // Copied from cpp-tests (cocos2d-x-3.2alpha0)
     auto listener = EventListenerAcceleration::create([this](Acceleration* acc, Event* event) {
-        if (this->getScheduler()->isTargetPaused(this)) return;
+        if (_gamePaused) return;
         this->moveBall(acc->x, acc->y, 0 /*acc->timestamp * 1e-9*/);
     });
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, _player);
@@ -126,17 +130,17 @@ bool Gameplay::init()
 #endif
 
     // Touch to pause/resume
-    auto touchListener = EventListenerTouchOneByOne::create();
-    touchListener->setSwallowTouches(true);
-    touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
+    _touchListener = EventListenerTouchOneByOne::create();
+    _touchListener->setSwallowTouches(true);
+    _touchListener->onTouchBegan = [this](Touch *touch, Event *event) {
         return true;
     };
-    touchListener->onTouchMoved = [this](Touch *touch, Event *event) {
+    _touchListener->onTouchMoved = [this](Touch *touch, Event *event) {
     };
-    touchListener->onTouchEnded = [this](Touch *touch, Event *event) {
+    _touchListener->onTouchEnded = [this](Touch *touch, Event *event) {
         this->pauseOrResume();
     };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
 
     // Turn on score scheduler
     //http://blog.csdn.net/qq575787460/article/details/8531397
@@ -170,6 +174,8 @@ void Gameplay::moveBall(float acc_x, float acc_y, float dt)
 
 void Gameplay::tick(float dt)
 {
+    this->movePhotonsAndShowPointers(dt);
+    if (_gamePaused) return;
     _score += dt;
     char s[16]; sprintf(s, "%d s", (int)_score);
     _scoreDisplayer->setString(s);
@@ -177,7 +183,7 @@ void Gameplay::tick(float dt)
     float deltaclr = onclr::player_colour_lost * dt;
     _r -= deltaclr; _g -= deltaclr; _b -= deltaclr;
     if (_r <= 0 || _g <= 0 || _b <= 0) {
-        // TODO: end game
+        endGame();
         if (_r <= 0) _r = 0;
         if (_g <= 0) _g = 0;
         if (_b <= 0) _b = 0;
@@ -205,7 +211,6 @@ void Gameplay::tick(float dt)
         // Generate a photon.
         this->generatePhoton();
     }
-    this->movePhotonsAndShowPointers(dt);
     this->checkHugs(dt);
 }
 
@@ -404,13 +409,37 @@ void Gameplay::goBack(Ref *sender)
 void Gameplay::pauseOrResume()
 {
     auto scheduler = this->getScheduler();
-    if (scheduler->isTargetPaused(this)) {
+    if (_gamePaused) {
         scheduler->resumeTarget(this);
+        _gamePaused = false;
     } else {
         _scoreDisplayer->setString("Paused");
         scheduler->pauseTarget(this);
         ENSURE_UNSCHEDULED(scheduler, KEYBOARD_SCHEDULE_KEY);
         ENSURE_UNSCHEDULED(scheduler, KEYBOARD_SCHEDULE_KEY_2);
+        _gamePaused = true;
+    }
+}
+
+void Gameplay::endGame()
+{
+    _gamePaused = true;
+    _eventDispatcher->removeEventListener(_touchListener);
+    ENSURE_UNSCHEDULED(this->getScheduler(), KEYBOARD_SCHEDULE_KEY);
+    ENSURE_UNSCHEDULED(this->getScheduler(), KEYBOARD_SCHEDULE_KEY_2);
+    _scoreDisplayer->setString("Oops!!");
+    _scoreDisplayer->runAction(FadeTo::create(1, 255));
+    _player->runAction(EaseElasticIn::create(ScaleTo::create(0.5, 0)));
+    char s[64]; sprintf(s, "Final score: %d", (int)_score);
+    for (int i = 0; i < 3; i++) {
+        freeWarnerPlace(_warner[i]->getPosition());
+        if (_warnerPlaceAvailable[0]) {
+            _warner[i]->setColor(Color3B::BLACK);
+            _warner[i]->runAction(Sequence::create(
+                FadeOut::create(0.3), FadeIn::create(0.3), nullptr));
+            _warner[i]->setString(s);
+            break;
+        }
     }
 }
 
@@ -419,7 +448,7 @@ Vec2 Gameplay::getWarnerPlaceAvailable()
     for (int i = 0; i < 3; i++)
         if (_warnerPlaceAvailable[i]) {
             _warnerPlaceAvailable[i] = false;
-            return Vec2(onclr::vsize.width * 0.5, onclr::vsize.height * 0.5 - 40 * i);
+            return WARNER_POS(i);
         }
     return Vec2::ZERO;
 }
@@ -427,8 +456,7 @@ Vec2 Gameplay::getWarnerPlaceAvailable()
 void Gameplay::freeWarnerPlace(cocos2d::Vec2 p)
 {
     for (int i = 0; i < 3; i++)
-        if (p.fuzzyEquals(Vec2(onclr::vsize.width * 0.5,
-         onclr::vsize.height * 0.5 - 40 * i), 5)) {
+        if (p.fuzzyEquals(WARNER_POS(i), 5)) {
             _warnerPlaceAvailable[i] = true;
             break;
         }

@@ -33,6 +33,7 @@ protected:
     void checkHugs(float dt);
     bool huggy(Photon *photon);
 
+    bool _gamePaused;
     BorderedBubble *_player;
     cocos2d::Vector<Photon *> _photons;
     cocos2d::Label *_scoreDisplayer;
@@ -44,6 +45,7 @@ protected:
     float _score;
     float _timeToLastPhotonGen;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];
+    cocos2d::EventListenerTouchOneByOne *_touchListener;
 
     // Player-related data
     int _photonHugID;
@@ -52,6 +54,7 @@ protected:
 
     void goBack(cocos2d::Ref *sender);
     void pauseOrResume();
+    void endGame();
     void moveBall(float acc_x, float acc_y, float dt);
     void tick(float dt);
     cocos2d::Vec2 getWarnerPlaceAvailable();
