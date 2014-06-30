@@ -189,6 +189,7 @@ void Gameplay::tick(float dt)
         if (_b <= 0) _b = 0;
     }
     _player->setColor(Color3B((int)_r, (int)_g, (int)_b));
+    CCLOG("%d, %d, %d", (int)_r, (int)_g, (int)_b);
     // Check warnings
     for (int i = 0; i < 3; i++) {
         bool isWarn = _warnColours[i].r * onclr::player_colour_warning / 255.0 > _r
@@ -349,6 +350,7 @@ void Gameplay::checkHugs(float dt)
             } else {
                 hugged = true;
                 _photonHugTime += dt;
+                Color3B c = photon->getColor();
                 if (_photonHugTime > photon->getHugTime()) {
                     _photonHugTime = photon->getHugTime();
                     // Let's eat this ;)
@@ -359,7 +361,6 @@ void Gameplay::checkHugs(float dt)
                         ScaleTo::create(0.5, 1)));
                     _player->reset(0.2);
                     // If we eat something, we get energy, huh?
-                    Color3B c = photon->getColor();
                     int cval = photon->getColourValue();
                     _r += (float)(c.r * cval) / 255.0;
                     _g += (float)(c.g * cval) / 255.0;
@@ -370,6 +371,10 @@ void Gameplay::checkHugs(float dt)
                     // Remove finally. Otherwise it causes wrong results
                     this->removePhoton(photon);
                 }
+                float deltaclr = onclr::player_colour_lost * dt;
+                _r += (float)c.r * deltaclr / 510.0;
+                _g += (float)c.g * deltaclr / 510.0;
+                _b += (float)c.b * deltaclr / 510.0;
                 _player->setBorderProgress(1 - _photonHugTime / photon->getHugTime());
             }
             break;
