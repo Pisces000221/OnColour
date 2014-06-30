@@ -116,6 +116,7 @@ bool Gameplay::init()
     // Enable accelerating
     // Copied from cpp-tests (cocos2d-x-3.2alpha0)
     auto listener = EventListenerAcceleration::create([this](Acceleration* acc, Event* event) {
+        if (this->getScheduler()->isTargetPaused(this)) return;
         this->moveBall(acc->x, acc->y, 0 /*acc->timestamp * 1e-9*/);
     });
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, _player);
