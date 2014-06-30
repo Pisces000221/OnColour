@@ -36,6 +36,10 @@ protected:
     BorderedBubble *_player;
     cocos2d::Vector<Photon *> _photons;
     cocos2d::Label *_scoreDisplayer;
+    cocos2d::Label *_warner[3];
+    bool _warnerShown[3];
+    static const cocos2d::Color3B _warnColours[3];
+    static const char *_warnMessage[3];
     float _score;
     float _timeToLastPhotonGen;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];

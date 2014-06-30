@@ -5,6 +5,13 @@
 #include "Global.h"
 using namespace cocos2d;
 
+const Color3B Gameplay::_warnColours[] = {
+    Color3B(255, 0, 0), Color3B(0, 255, 0), Color3B(0, 0, 255)
+};
+const char *Gameplay::_warnMessage[] = {
+    "Off colour: red", "Off colour: green", "Off colour: blue"
+};
+
 #define RAND_0_1 ((float)rand() / RAND_MAX)
 #define RAND_BTW(_min, _max) (RAND_0_1 * (_max - _min) + _min)
 #define RAND_BTW_INT(_min, _max) (rand() % (_max - _min) + _min)    // [_min, max)
@@ -44,6 +51,16 @@ void Gameplay::init2()
     _scoreDisplayer->setColor(Color3B::BLACK);
     _scoreDisplayer->setOpacity(128);
     scene->addChild(_scoreDisplayer, 8);
+    // The warner
+    for (int i = 0; i < 3; i++) {
+        _warner[i] = onclr::label(_warnMessage[i], 40, false);
+        _warner[i]->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+        _warner[i]->setPosition(Vec2(
+            onclr::vsize.width * 0.5, onclr::vsize.height * 0.5 - 40 * i));
+        _warner[i]->setOpacity(0);
+        _warner[i]->setColor(_warnColours[i]);
+        scene->addChild(_warner[i], 8);
+    }
 }
 
 bool Gameplay::init()
@@ -165,6 +182,19 @@ void Gameplay::tick(float dt)
         if (_b <= 0) _b = 0;
     }
     _player->setColor(Color3B((int)_r, (int)_g, (int)_b));
+    // Check warnings
+    for (int i = 0; i < 3; i++) {
+        bool isWarn = _warnColours[i].r * onclr::player_colour_warning / 255.0 > _r
+         || _warnColours[i].g * onclr::player_colour_warning / 255.0 > _g
+         || _warnColours[i].b * onclr::player_colour_warning / 255.0 > _b;
+        if (!_warnerShown[i] && isWarn) {
+            _warner[i]->runAction(FadeTo::create(0.3, 128));
+            _warnerShown[i] = true;
+        } else if (_warnerShown[i] && !isWarn) {
+            _warner[i]->runAction(FadeOut::create(0.3));
+            _warnerShown[i] = false;
+        }
+    }
     // Check if is generating bubble
     _timeToLastPhotonGen -= dt;
     if (_timeToLastPhotonGen <= 0) {
