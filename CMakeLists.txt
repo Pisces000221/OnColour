@@ -62,6 +62,7 @@ set(GAME_SRC
   Classes/scenes/SplashScene.cpp
   Classes/scenes/StartupScene.cpp
   Classes/scenes/GameScene.cpp
+  Classes/scenes/PreferenceScene.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
   Classes/widgets/BorderedBubble.cpp
@@ -78,6 +79,7 @@ set(GAME_SRC
   Classes/scenes/SplashScene.cpp
   Classes/scenes/StartupScene.cpp
   Classes/scenes/GameScene.cpp
+  Classes/scenes/PreferenceScene.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
   Classes/widgets/BorderedBubble.cpp

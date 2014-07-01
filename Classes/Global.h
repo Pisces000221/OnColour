@@ -30,6 +30,29 @@ namespace onclr {
 #define ENSURE_UNSCHEDULED(_scheduler, _key) \
     if (_scheduler->isScheduled(_key, this)) _scheduler->unschedule(_key, this)
 
+// Used mainly in StartupScene and in goBack() method
+// Requires cocos2d.h and using namespace cocos2d
+// Runs an animation to go to the next scene
+#define GO_TO_SCENE(__layer_type__) do { \
+    Scene *nextScene = __layer_type__::createScene(); \
+    Director::getInstance()->pushScene(TransitionFade::create(0.8, nextScene, Color3B::WHITE)); \
+    LayerColor *cover = LayerColor::create(Color4B::WHITE); \
+    cover->setOpacity(0); \
+    this->addChild(cover, INT_MAX); \
+    cover->runAction(Sequence::create( \
+        DelayTime::create(0.8), \
+        CallFunc::create([cover]() { cover->setOpacity(255); }), \
+        FadeOut::create(0.4), \
+        RemoveSelf::create(), nullptr)); } while (0)
+// Runs an animation and go back
+#define GO_BACK_ANIMATED do { \
+    LayerColor *cover = LayerColor::create(Color4B::WHITE); \
+    this->getScene()->addChild(cover, INT_MAX); \
+    cover->setOpacity(0); \
+    cover->runAction(Sequence::create( \
+        FadeIn::create(0.4), \
+        CallFunc::create([]() { Director::getInstance()->popScene(); }), nullptr)); } while (0)
+
 extern cocos2d::Size vsize;
 void init();
 extern const cocos2d::Size mapsize;

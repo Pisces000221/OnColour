@@ -392,13 +392,8 @@ void Gameplay::goBack(Ref *sender)
     // Turn off accelerometer
     Device::setAccelerometerEnabled(false);
 #endif
-    // Run animation
-    auto cover = LayerColor::create(Color4B::WHITE);
-    this->getScene()->addChild(cover, INT_MAX);
-    cover->setOpacity(0);
-    cover->runAction(Sequence::create(
-        FadeIn::create(0.4),
-        CallFunc::create([]() { Director::getInstance()->popScene(); }), nullptr));
+    // Run animation and go back (see Global.h)
+    GO_BACK_ANIMATED;
 }
 
 void Gameplay::pauseOrResume()

@@ -12,6 +12,7 @@ public:
     SCENE_FUNC(Startup);
 
     void newGame(Ref *sender);
+    void showPreferences(Ref *sender);
 };
 
 #endif

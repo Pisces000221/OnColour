@@ -1,5 +1,6 @@
 #include "StartupScene.h"
 #include "GameScene.h"
+#include "PreferenceScene.h"
 #include "MenuItemLabelTint.h"
 #include "Bubble.h"
 #include "Global.h"
@@ -42,12 +43,19 @@ bool Startup::init()
         onclr::label("New game", 36, false, Color3B::BLACK), CC_CALLBACK_1(Startup::newGame, this));
     newGameMenu->setNormalizedPosition(Vec2(0.5, 0.618));
     newGameMenu->setOpacity(0);
-    auto menu = Menu::create(newGameMenu, nullptr);
+    auto preferencesMenu = MenuItemLabelTint::create(
+        onclr::label("Preferences", 36, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showPreferences, this));
+    preferencesMenu->setNormalizedPosition(Vec2(0.5, 0.5));
+    preferencesMenu->setOpacity(0);
+    auto menu = Menu::create(newGameMenu, preferencesMenu, nullptr);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
     newGameMenu->runAction(Sequence::create(
         DelayTime::create(3),
+        FadeIn::create(0.6), nullptr));
+    preferencesMenu->runAction(Sequence::create(
+        DelayTime::create(3.1),
         FadeIn::create(0.6), nullptr));
 
     return true;
@@ -55,14 +63,10 @@ bool Startup::init()
 
 void Startup::newGame(Ref *sender)
 {
-    auto nextScene = Gameplay::createScene();
-    Director::getInstance()->pushScene(TransitionFade::create(0.8, nextScene, Color3B::WHITE));
-    auto cover = LayerColor::create(Color4B::WHITE);
-    cover->setOpacity(0);
-    this->addChild(cover, INT_MAX);
-    cover->runAction(Sequence::create(
-        DelayTime::create(0.8),
-        CallFunc::create([cover]() { cover->setOpacity(255); }),
-        FadeOut::create(0.4),
-        RemoveSelf::create(), nullptr));
+    GO_TO_SCENE(Gameplay);
+}
+
+void Startup::showPreferences(Ref *sender)
+{
+    GO_TO_SCENE(PreferenceLayer);
 }
