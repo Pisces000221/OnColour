@@ -138,6 +138,8 @@ bool Gameplay::init()
     // Father-tricking CC_CALLBACK_1...
     this->getScheduler()->schedule(std::bind(&Gameplay::tick, this, std::placeholders::_1),
         this, 0, false, TICK_SCHEDULE_KEY);
+    // To test Cocos2d-x PR #7270
+    //this->getScheduler()->schedule(schedule_selector(Gameplay::tick), this, 0, false);
 
     return true;
 }
