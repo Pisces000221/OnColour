@@ -66,6 +66,7 @@ set(GAME_SRC
   Classes/widgets/Bubble.cpp
   Classes/widgets/BorderedBubble.cpp
   Classes/widgets/Photon.cpp
+  Classes/widgets/SineVelPhoton.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC
@@ -81,6 +82,7 @@ set(GAME_SRC
   Classes/widgets/Bubble.cpp
   Classes/widgets/BorderedBubble.cpp
   Classes/widgets/Photon.cpp
+  Classes/widgets/SineVelPhoton.cpp
 )
 endif()
 

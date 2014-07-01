@@ -46,6 +46,12 @@ extern const int photon_minvelocity;
 extern const int photon_maxvelocity;
 extern const float photon_minhugtime;
 extern const float photon_maxhugtime;
+extern const float sinevel_photon_minperiod;
+extern const float sinevel_photon_maxperiod;
+extern const float sinevel_photon_minam;
+extern const float sinevel_photon_maxam;
+extern const float normal_photon_possib;
+extern const float sinevel_photon_possib;
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,

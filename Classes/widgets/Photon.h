@@ -27,7 +27,7 @@ public:
     int getColourValue();
     void setHugTime(float hugTime) { _hugTime = hugTime; }
     float getHugTime() { return _hugTime; }
-    void move(float dt);
+    virtual void move(float dt);
 
     static const int colour_ct = 3;
     static /*const*/ cocos2d::Color3B colours[3];

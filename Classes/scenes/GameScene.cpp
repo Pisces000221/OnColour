@@ -3,6 +3,7 @@
 #include "Bubble.h"
 #include "BorderedBubble.h"
 #include "Photon.h"
+#include "SineVelPhoton.h"
 #include "Global.h"
 using namespace cocos2d;
 
@@ -206,7 +207,10 @@ void Gameplay::tick(float dt)
 
 void Gameplay::generatePhoton()
 {
-    auto b = Photon::randomGen();
+    Photon *b = nullptr;
+    float a = RAND_0_1;
+    if (a < onclr::normal_photon_possib) b = Photon::randomGen();
+    else b = SineVelPhoton::randomGen();
     float b_radius = b->getRadius();
     // Generate a random position tangent to the border
     // > The radiation is emitted tangent to these trajectories. (Scientific American)

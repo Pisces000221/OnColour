@@ -19,6 +19,12 @@ const int photon_minvelocity = 30;
 const int photon_maxvelocity = 120;
 const float photon_minhugtime = 3.0f;
 const float photon_maxhugtime = 5.0f;
+const float sinevel_photon_minperiod = 0.9f;
+const float sinevel_photon_maxperiod = 2.7f;
+const float sinevel_photon_minam = 0.3f;
+const float sinevel_photon_maxam = 0.7f;
+const float normal_photon_possib = 0.6f;
+const float sinevel_photon_possib = 0.4f;
 
 cocos2d::Size vsize;
 void init()
