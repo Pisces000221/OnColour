@@ -2,6 +2,7 @@
 #include "MenuItemLabelTint.h"
 #include "Bubble.h"
 #include "BorderedBubble.h"
+#include "Photon.h"
 #include "Global.h"
 using namespace cocos2d;
 
@@ -11,17 +12,6 @@ const Color3B Gameplay::_warnColours[] = {
 const char *Gameplay::_warnMessage[] = {
     "* Off colour: red *", "* Off colour: green *", "* Off colour: blue *"
 };
-
-#define RAND_0_1 ((float)rand() / RAND_MAX)
-#define RAND_BTW(_min, _max) (RAND_0_1 * (_max - _min) + _min)
-#define RAND_BTW_INT(_min, _max) (rand() % (_max - _min) + _min)    // [_min, max)
-#define RAND_RATE(_val, _min, _max, _min2, _max2) \
-    (((_val - _min) / (_max - _min)) * (_max2 - _min2) + _min2)
-
-#define FIX_POS(_pos, _min, _max) \
-    if (_pos < (_min)) _pos = (_min); else if (_pos > (_max)) _pos = (_max)
-#define ENSURE_UNSCHEDULED(_scheduler, _key) \
-    if (_scheduler->isScheduled(_key, this)) _scheduler->unschedule(_key, this)
 
 // maximum supported keys to be pressed at once: 2
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
@@ -217,16 +207,8 @@ void Gameplay::tick(float dt)
 
 void Gameplay::generatePhoton()
 {
-    float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
-    int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
-    int b_colour_idx = rand() % onclr::photoncolourct;
-    float b_hugtime = RAND_RATE(b_radius, 
-        onclr::photon_minradius, onclr::photon_maxradius,
-        onclr::photon_minhugtime, onclr::photon_maxhugtime);
-    auto b = Photon::create(b_radius, onclr::photoncolours[b_colour_idx]);
-    b->setColourValue(b_colourval);
-    b->setHugTime(b_hugtime);
-    b->setVelocity(RAND_BTW_INT(onclr::photon_minvelocity, onclr::photon_maxvelocity), asin(0.7));
+    auto b = Photon::randomGen();
+    float b_radius = b->getRadius();
     // Generate a random position tangent to the border
     // > The radiation is emitted tangent to these trajectories. (Scientific American)
     if (rand() % 2) {   // top/bottom border
@@ -374,9 +356,9 @@ void Gameplay::checkHugs(float dt)
                 float deltaclr = onclr::player_colour_lost * dt;
                 // The colour lose 2/3 slower when hugging
                 // Magic of love?
-                _r += (float)c.r * deltaclr / 765.0;
-                _g += (float)c.g * deltaclr / 765.0;
-                _b += (float)c.b * deltaclr / 765.0;
+                _r += (float)c.r * deltaclr / 255.0;
+                _g += (float)c.g * deltaclr / 255.0;
+                _b += (float)c.b * deltaclr / 255.0;
                 _player->setBorderProgress(1 - _photonHugTime / photon->getHugTime());
             }
             break;

@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "Bubble.h"
 
+//class Bubble;
 class Photon : public Bubble
 {
 public:
@@ -24,6 +25,10 @@ public:
     void setHugTime(float hugTime) { _hugTime = hugTime; }
     float getHugTime() { return _hugTime; }
     void move(float dt);
+
+    static const int colour_ct = 3;
+    static /*const*/ cocos2d::Color3B colours[3];
+    static Photon *randomGen();
 
 protected:
     float _v, _direction;

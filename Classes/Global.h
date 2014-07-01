@@ -17,28 +17,35 @@ namespace onclr {
 #define IS_ON_PC (CC_TARGET_PLATFORM == CC_PLATFORM_WINDOWS) \
     || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 
+// Used everywhere
+#define RAND_0_1 ((float)rand() / RAND_MAX)
+#define RAND_BTW(_min, _max) (RAND_0_1 * (_max - _min) + _min)
+#define RAND_BTW_INT(_min, _max) (rand() % (_max - _min) + _min)    // [_min, max)
+#define RAND_RATE(_val, _min, _max, _min2, _max2) \
+    (((_val - _min) / (_max - _min)) * (_max2 - _min2) + _min2)
+
+// Used mainly in GameScene
+#define FIX_POS(_pos, _min, _max) \
+    if (_pos < (_min)) _pos = (_min); else if (_pos > (_max)) _pos = (_max)
+#define ENSURE_UNSCHEDULED(_scheduler, _key) \
+    if (_scheduler->isScheduled(_key, this)) _scheduler->unschedule(_key, this)
+
 extern cocos2d::Size vsize;
 void init();
-const cocos2d::Size mapsize = cocos2d::Size(1200, 800);
-const float photongen_mintime = 3.0f;
-const float photongen_maxtime = 6.0f;
-const float player_radius = 30.0f;
-const float player_colour_lost = 8.0f;
-const float player_colour_warning = 64.0f;
-const float photon_minradius = 36.0f;
-const float photon_maxradius = 72.0f;
-const int photoncolourct = 3;
-const cocos2d::Color3B photoncolours[] = {
-    cocos2d::Color3B(255, 0, 0),
-    cocos2d::Color3B(0, 255, 0),
-    cocos2d::Color3B(0, 0, 255)
-};
-const int photon_mincolourval = 64;
-const int photon_maxcolourval = 255;
-const int photon_minvelocity = 30;
-const int photon_maxvelocity = 120;
-const float photon_minhugtime = 3.0f;
-const float photon_maxhugtime = 5.0f;
+extern const cocos2d::Size mapsize;
+extern const float photongen_mintime;
+extern const float photongen_maxtime;
+extern const float player_radius;
+extern const float player_colour_lost;
+extern const float player_colour_warning;
+extern const float photon_minradius;
+extern const float photon_maxradius;
+extern const int photon_mincolourval;
+extern const int photon_maxcolourval;
+extern const int photon_minvelocity;
+extern const int photon_maxvelocity;
+extern const float photon_minhugtime;
+extern const float photon_maxhugtime;
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,
