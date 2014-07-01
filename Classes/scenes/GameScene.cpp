@@ -69,6 +69,9 @@ bool Gameplay::init()
     _r = _g = _b = 255.0f;
     _gamePaused = false;
 
+    // Load sensitivity preference
+    _sensitivity = UserDefault::getInstance()->getFloatForKey("Senvitivity", 1);
+
     // The player
     _player = BorderedBubble::create(onclr::player_radius, 3, Color3B::WHITE);
     // Don't use normalized positions here since we need to set absolute position later
@@ -148,11 +151,11 @@ void Gameplay::moveBall(float acc_x, float acc_y, float dt)
 {
     auto curpos = _player->getPosition();
 #if IS_ON_PC
-    curpos.x += acc_x * 216.0f * dt;
-    curpos.y += acc_y * 216.0f * dt;
+    curpos.x += acc_x * 216.0f * _sensitivity * dt;
+    curpos.y += acc_y * 216.0f * _sensitivity * dt;
 #else
-    curpos.x += acc_x * 12.0f;      // TODO: adjust sensitivity in the settings page
-    curpos.y += acc_y * 12.0f;      // Maybe sensitivity is between 8 and 24 (decide later)
+    curpos.x += acc_x * 12.0f * _sensitivity;
+    curpos.y += acc_y * 12.0f * _sensitivity;
 #endif
     FIX_POS(curpos.x, onclr::player_radius, onclr::mapsize.width - onclr::player_radius);
     FIX_POS(curpos.y, onclr::player_radius, onclr::mapsize.height - onclr::player_radius);

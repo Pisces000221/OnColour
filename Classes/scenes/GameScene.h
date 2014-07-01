@@ -44,6 +44,7 @@ protected:
     static const char *_warnMessage[3];
     float _score;
     float _timeToLastPhotonGen;
+    float _sensitivity;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];
     cocos2d::EventListenerTouchOneByOne *_touchListener;
 
