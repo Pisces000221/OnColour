@@ -75,6 +75,7 @@ extern const float sinevel_photon_minam;
 extern const float sinevel_photon_maxam;
 extern const float normal_photon_possib;
 extern const float sinevel_photon_possib;
+extern const float bomb_possib;
 
 cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,

@@ -24,7 +24,8 @@ const float sinevel_photon_maxperiod = 2.7f;
 const float sinevel_photon_minam = 0.3f;
 const float sinevel_photon_maxam = 0.7f;
 const float normal_photon_possib = 0.6f;
-const float sinevel_photon_possib = 0.4f;
+const float sinevel_photon_possib = 0.35f;
+const float bomb_possib = 0.05f;
 
 cocos2d::Size vsize;
 void init()

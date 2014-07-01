@@ -32,6 +32,7 @@ protected:
     void movePhotonsAndShowPointers(float dt);
     void checkHugs(float dt);
     bool huggy(Photon *photon);
+    bool semi_huggy(Photon *photon);
 
     bool _gamePaused;
     BorderedBubble *_player;

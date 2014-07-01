@@ -4,6 +4,7 @@
 #include "BorderedBubble.h"
 #include "Photon.h"
 #include "SineVelPhoton.h"
+#include "Bomb.h"
 #include "Global.h"
 using namespace cocos2d;
 
@@ -214,8 +215,12 @@ void Gameplay::generatePhoton()
 {
     Photon *b = nullptr;
     float a = RAND_0_1;
-    if (a < onclr::normal_photon_possib) b = Photon::randomGen();
-    else b = SineVelPhoton::randomGen();
+    if (a < onclr::normal_photon_possib)
+        b = Photon::randomGen();
+    else if (a < onclr::normal_photon_possib + onclr::sinevel_photon_possib)
+        b = SineVelPhoton::randomGen();
+    else
+        b = Bomb::randomGen();
     float b_radius = b->getRadius();
     // Generate a random position tangent to the border
     // > The radiation is emitted tangent to these trajectories. (Scientific American)
@@ -333,6 +338,12 @@ void Gameplay::movePhotonsAndShowPointers(float dt)
 void Gameplay::checkHugs(float dt)
 {
     bool hugged = false;
+    for (auto &photon : _photons)
+        if (photon->isBomb() && semi_huggy(photon)) {
+            // BOOOOOM!!
+            _r = 0; _g = 0; _b = 0;
+            return;
+        }
     if (_photonHugID > 0) {
         for (auto &photon : _photons) if (photon->getID() == _photonHugID) {
             if (!huggy(photon)) { // got out
@@ -385,6 +396,11 @@ void Gameplay::checkHugs(float dt)
 bool Gameplay::huggy(Photon *photon)
 {
     float r = (photon->getRadius() - onclr::player_radius);
+    return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
+}
+bool Gameplay::semi_huggy(Photon *photon)
+{
+    float r = photon->getRadius() + onclr::player_radius;
     return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
 }
 
