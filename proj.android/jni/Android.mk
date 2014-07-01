@@ -5,6 +5,7 @@ include $(CLEAR_VARS)
 $(call import-add-path,$(LOCAL_PATH)/../../cocos2d)
 $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/external)
 $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/cocos)
+$(call import-add-path,$(LOCAL_PATH)/../../cocos2d/cocos/ui)
 
 LOCAL_MODULE := cocos2dcpp_shared
 
@@ -16,6 +17,7 @@ LOCAL_SRC_FILES := oncolour/main.cpp \
                    ../../Classes/scenes/SplashScene.cpp \
                    ../../Classes/scenes/StartupScene.cpp \
                    ../../Classes/scenes/GameScene.cpp \
+                   ../../Classes/scenes/PreferenceScene.cpp \
                    ../../Classes/widgets/MenuItemLabelTint.cpp \
                    ../../Classes/widgets/Bubble.cpp \
                    ../../Classes/widgets/BorderedBubble.cpp \
@@ -34,7 +36,8 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += spine_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += cocostudio_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += cocos_network_static
-# LOCAL_WHOLE_STATIC_LIBRARIES += cocos_extension_static
+LOCAL_WHOLE_STATIC_LIBRARIES += cocos_extension_static
+LOCAL_WHOLE_STATIC_LIBRARIES += cocos_ui_static
 
 
 include $(BUILD_SHARED_LIBRARY)
@@ -47,4 +50,5 @@ $(call import-module,audio/android)
 # $(call import-module,editor-support/spine)
 # $(call import-module,editor-support/cocostudio)
 # $(call import-module,network)
-# $(call import-module,extensions)
+$(call import-module,extensions)
+$(call import-module,ui)
