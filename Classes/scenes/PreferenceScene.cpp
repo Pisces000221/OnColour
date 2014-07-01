@@ -4,9 +4,20 @@
 #include "ui/CocosGUI.h"
 using namespace cocos2d;
 
+#define MIN_SENSITIVITY 0.5
+#define MAX_SENSITIVITY 1.5
+
 bool PreferenceLayer::init()
 {
     if (!LayerColor::initWithColor(Color4B(255, 255, 255, 255))) return false;
+
+    // Read previous set values
+    auto ud = UserDefault::getInstance();
+    _sliderValues[0] = ud->getFloatForKey("Senvitivity", 1);
+    _sliderValues[1] = ud->getFloatForKey("Sound_Vol", 1);
+    _sliderValues[2] = ud->getFloatForKey("FX_Vol", 1);
+    CCLOG("sensitivity, soundvol, fxvol = %f, %f, %f",
+        _sliderValues[0], _sliderValues[1], _sliderValues[2]);
 
     // WTF... we create a Scale9Sprite, and we're ready to link?!!!
     // Ehh... I think GCC has ignored that for us unless we use it...
@@ -48,6 +59,13 @@ bool PreferenceLayer::init()
     slider_1->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
     slider_1->setPosition(Vec2(onclr::vsize.width - 24, onclr::vsize.height - 88));
     slider_1->setScale(0.85);
+    slider_1->setPercent(RAND_RATE(
+            _sliderValues[0], MIN_SENSITIVITY, MAX_SENSITIVITY, 0.0, 100.0));
+    slider_1->addEventListener([this](Ref *sender, ui::Slider::EventType type) {
+        _sliderValues[0] = RAND_RATE(
+            ((ui::Slider *)sender)->getPercent(),
+            0.0, 100.0, MIN_SENSITIVITY, MAX_SENSITIVITY);
+    });
     this->addChild(slider_1);
 
     // Music volume
@@ -64,6 +82,10 @@ bool PreferenceLayer::init()
     slider_2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
     slider_2->setPosition(Vec2(onclr::vsize.width - 24, onclr::vsize.height - 128));
     slider_2->setScale(0.85);
+    slider_2->setPercent(_sliderValues[1] * 100.0);
+    slider_2->addEventListener([this](Ref *sender, ui::Slider::EventType type) {
+        _sliderValues[1] = ((ui::Slider *)sender)->getPercent() / 100.0;
+    });
     this->addChild(slider_2);
     // Effects' volume
     auto label_3 = onclr::label("FX volume", 28);
@@ -79,6 +101,10 @@ bool PreferenceLayer::init()
     slider_3->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
     slider_3->setPosition(Vec2(onclr::vsize.width - 24, onclr::vsize.height - 168));
     slider_3->setScale(0.85);
+    slider_3->setPercent(_sliderValues[2] * 100.0);
+    slider_3->addEventListener([this](Ref *sender, ui::Slider::EventType type) {
+        _sliderValues[2] = ((ui::Slider *)sender)->getPercent() / 100.0;
+    });
     this->addChild(slider_3);
 
     return true;
@@ -86,5 +112,10 @@ bool PreferenceLayer::init()
 
 void PreferenceLayer::goBack(Ref *sender)
 {
+    auto ud = UserDefault::getInstance();
+    ud->setFloatForKey("Senvitivity", _sliderValues[0]);
+    ud->setFloatForKey("Sound_Vol", _sliderValues[1]);
+    ud->setFloatForKey("FX_Vol", _sliderValues[2]);
+    ud->flush();
     GO_BACK_ANIMATED;
 }

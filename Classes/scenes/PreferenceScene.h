@@ -12,6 +12,9 @@ public:
     SCENE_FUNC(PreferenceLayer);
 
     void goBack(cocos2d::Ref *sender);
+
+protected:
+    float _sliderValues[3];
 };
 
 #endif
