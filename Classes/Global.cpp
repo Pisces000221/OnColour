@@ -6,8 +6,8 @@ namespace onclr {
 
 // Constants first
 const Size mapsize = Size(1200, 800);
-const float photongen_mintime = 3.0f;
-const float photongen_maxtime = 6.0f;
+const float photongen_mintime = 1.8f;
+const float photongen_maxtime = 4.0f;
 const float player_radius = 30.0f;
 const float player_colour_lost = 8.0f;
 const float player_colour_warning = 64.0f;

@@ -9,6 +9,7 @@
 class Photon : public Bubble
 {
 public:
+    Photon();
     static Photon *create(float radius, cocos2d::Color3B colour)
     {
         Photon *ret = new Photon();
@@ -18,6 +19,8 @@ public:
         return ret;
     }
     int getID() { return _id; }
+    // Call this when created me
+    void initStartPos();
     // @params directionAngle The angle, in a nutshell, arctan(k).
     void setVelocity(float v, float directionAngle);
     void setColourValue(int val);
@@ -32,6 +35,8 @@ public:
 
 protected:
     float _v, _direction;
+    cocos2d::Vec2 _startPos;
+    float _moveTime;
     float _hugTime;
     int _cval, _id;
     static int total;

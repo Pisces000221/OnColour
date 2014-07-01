@@ -8,6 +8,15 @@ cocos2d::Color3B Photon::colours[3] = {
     cocos2d::Color3B(0, 0, 255)
 };
 
+Photon::Photon()
+: _moveTime(0)
+{ }
+
+void Photon::initStartPos()
+{
+    _startPos = _position;
+}
+
 void Photon::setVelocity(float v, float directionAngle)
 {
     _v = v;
@@ -27,7 +36,9 @@ int Photon::getColourValue()
 
 void Photon::move(float dt)
 {
-    setPosition(getPosition() + cocos2d::Vec2(_v * sin(_direction), _v * cos(_direction)) * dt);
+    _moveTime += dt;
+    setPosition(_startPos +
+        cocos2d::Vec2(sin(_direction), cos(_direction)) * _moveTime * _v);
 }
 
 Photon *Photon::randomGen()

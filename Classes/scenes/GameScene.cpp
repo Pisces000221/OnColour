@@ -179,7 +179,6 @@ void Gameplay::tick(float dt)
         if (_b <= 0) _b = 0;
     }
     _player->setColor(Color3B((int)_r, (int)_g, (int)_b));
-    CCLOG("%d, %d, %d", (int)_r, (int)_g, (int)_b);
     // Check warnings
     for (int i = 0; i < 3; i++) {
         bool isWarn = _warnColours[i].r * onclr::player_colour_warning / 255.0 > _r
@@ -220,6 +219,7 @@ void Gameplay::generatePhoton()
             rand() % 2 ? onclr::mapsize.width + b_radius : -b_radius,
             RAND_BTW(-b_radius, onclr::mapsize.height + b_radius)));
     }
+    b->initStartPos();
     // Generate a random direction that goes into the screen
     float destX = RAND_BTW(b_radius, onclr::mapsize.width - b_radius);
     float destY = RAND_BTW(b_radius, onclr::mapsize.height - b_radius);
