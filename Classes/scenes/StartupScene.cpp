@@ -9,9 +9,10 @@ using namespace cocos2d;
 bool Startup::init()
 {
     if (!LayerColor::initWithColor(Color4B(255, 255, 255, 255))) return false;
+    float s_ratio = (onclr::ratio - 1) * 0.4 + 1;
 
     // The title/banner label
-    auto titleLabel = onclr::label("On Colour", 60, false);
+    auto titleLabel = onclr::label("On Colour", 60 * s_ratio, false);
     titleLabel->setNormalizedPosition(Vec2(0.5, 0.8));
     this->addChild(titleLabel);
     // Random colours
@@ -43,11 +44,11 @@ bool Startup::init()
     this->addChild(bubble);
 
     auto newGameMenu = MenuItemLabelTint::create(
-        onclr::label("New game", 36, false, Color3B::BLACK), CC_CALLBACK_1(Startup::newGame, this));
+        onclr::label("New game", 36 * s_ratio, false, Color3B::BLACK), CC_CALLBACK_1(Startup::newGame, this));
     newGameMenu->setNormalizedPosition(Vec2(0.5, 0.618));
     newGameMenu->setOpacity(0);
     auto preferencesMenu = MenuItemLabelTint::create(
-        onclr::label("Preferences", 36, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showPreferences, this));
+        onclr::label("Preferences", 36 * s_ratio, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showPreferences, this));
     preferencesMenu->setNormalizedPosition(Vec2(0.5, 0.5));
     preferencesMenu->setOpacity(0);
     auto menu = Menu::create(newGameMenu, preferencesMenu, nullptr);

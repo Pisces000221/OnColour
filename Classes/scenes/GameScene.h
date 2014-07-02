@@ -33,6 +33,7 @@ protected:
     void checkHugs(float dt);
     bool huggy(Photon *photon);
     bool semi_huggy(Photon *photon);
+    bool checkFever();
 
     bool _gamePaused;
     BorderedBubble *_player;
@@ -53,6 +54,7 @@ protected:
     int _photonHugID;
     float _photonHugTime;
     float _r, _g, _b;
+    bool _isInFeverMode;
 
     void goBack(cocos2d::Ref *sender);
     void pauseOrResume();

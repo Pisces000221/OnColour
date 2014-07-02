@@ -69,7 +69,7 @@ bool Gameplay::init()
     _timeToLastPhotonGen = _photonHugTime = 0.0f;
     _photonHugID = 0;
     _r = _g = _b = 255.0f;
-    _gamePaused = false;
+    _isInFeverMode = _gamePaused = false;
 
     // Load sensitivity preference
     _sensitivity = UserDefault::getInstance()->getFloatForKey("Senvitivity", 1);
@@ -204,6 +204,14 @@ void Gameplay::tick(float dt)
             freeWarnerPlace(_warner[i]->getPosition());
         }
     }
+    // Check if is in fever mode
+    bool curIsInFeverMode = this->checkFever();
+    if (curIsInFeverMode && !_isInFeverMode) {
+        // TODO: enter fever mode.
+    } else if (!curIsInFeverMode && _isInFeverMode) {
+        // TODO: leave fever mode.
+    }
+    _isInFeverMode = curIsInFeverMode;
     // Check if is generating bubble
     _timeToLastPhotonGen -= dt;
     if (_timeToLastPhotonGen <= 0) {
@@ -405,6 +413,11 @@ bool Gameplay::semi_huggy(Photon *photon)
 {
     float r = photon->getRadius() + onclr::player_radius;
     return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
+}
+
+bool Gameplay::checkFever()
+{
+    return false;
 }
 
 // copied from HexBizarre/GameScene

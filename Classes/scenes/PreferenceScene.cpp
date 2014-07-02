@@ -50,9 +50,9 @@ bool PreferenceLayer::init()
 
     // Ball speed on PC and tilt sensitivity on tablets and phones
 #if IS_ON_PC
-    auto label_1 = onclr::label("Ball speed", 28);
+    auto label_1 = onclr::label("Ball speed", 28 * s_ratio);
 #else
-    auto label_1 = onclr::label("Tilt sensitivity", 28);
+    auto label_1 = onclr::label("Tilt sensitivity", 28 * s_ratio);
 #endif
     label_1->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_1->setPosition(Vec2(6, onclr::vsize.height - 88 * s_ratio));
@@ -62,7 +62,7 @@ bool PreferenceLayer::init()
     slider_1->setColor(Color3B(0xfc, 0x25, 0xef));
     INIT_SLIDER_TEXTURES(slider_1);
     slider_1->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-    slider_1->setPosition(Vec2(onclr::vsize.width - 24,
+    slider_1->setPosition(Vec2(onclr::vsize.width - 24 * s_ratio,
         onclr::vsize.height - 88 * s_ratio));
     slider_1->setScale(0.85 * s_ratio);
     slider_1->setPercent(RAND_RATE(
@@ -79,7 +79,7 @@ bool PreferenceLayer::init()
     slider_1->runAction(FADE_IN_DELAY(1.1));
 
     // Music volume
-    auto label_2 = onclr::label("Music volume", 28);
+    auto label_2 = onclr::label("Music volume", 28 * s_ratio);
     label_2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_2->setPosition(Vec2(6, onclr::vsize.height - 128 * s_ratio));
     label_2->setColor(Color3B::BLACK);
@@ -88,7 +88,7 @@ bool PreferenceLayer::init()
     slider_2->setColor(Color3B(0x25, 0xfc, 0x80));
     INIT_SLIDER_TEXTURES(slider_2);
     slider_2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-    slider_2->setPosition(Vec2(onclr::vsize.width - 24,
+    slider_2->setPosition(Vec2(onclr::vsize.width - 24 * s_ratio,
         onclr::vsize.height - 128 * s_ratio));
     slider_2->setScale(0.85 * s_ratio);
     slider_2->setPercent(_sliderValues[1] * 100.0);
@@ -102,7 +102,7 @@ bool PreferenceLayer::init()
     slider_2->runAction(FADE_IN_DELAY(1.25));
 
     // Effects' volume
-    auto label_3 = onclr::label("FX volume", 28);
+    auto label_3 = onclr::label("FX volume", 28 * s_ratio);
     label_3->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_3->setPosition(Vec2(6, onclr::vsize.height - 168 * s_ratio));
     label_3->setColor(Color3B::BLACK);
@@ -111,7 +111,7 @@ bool PreferenceLayer::init()
     slider_3->setColor(Color3B(0x25, 0x80, 0xfc));
     INIT_SLIDER_TEXTURES(slider_3);
     slider_3->setAnchorPoint(Vec2::ANCHOR_MIDDLE_RIGHT);
-    slider_3->setPosition(Vec2(onclr::vsize.width - 24,
+    slider_3->setPosition(Vec2(onclr::vsize.width - 24 * s_ratio,
         onclr::vsize.height - 168 * s_ratio));
     slider_3->setScale(0.85 * s_ratio);
     slider_3->setPercent(_sliderValues[2] * 100.0);
