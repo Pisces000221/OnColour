@@ -1,5 +1,6 @@
 #include "PreferenceScene.h"
 #include "Global.h"
+#include "MenuItemLabelTint.h"
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
 using namespace cocos2d;
@@ -123,6 +124,22 @@ bool PreferenceLayer::init()
     slider_3->setOpacity(0);
     label_3->runAction(FADE_IN_DELAY(1.4));
     slider_3->runAction(FADE_IN_DELAY(1.4));
+
+    auto resetMenu = MenuItemLabelTint::create(
+        onclr::label("Reset to default", 32 * s_ratio, false, Color3B::BLACK),
+        [this, slider_1, slider_2, slider_3] (Ref *sender) {
+            slider_1->setPercent(50); _sliderValues[0] = 1;
+            slider_2->setPercent(100); _sliderValues[1] = 1;
+            slider_3->setPercent(100); _sliderValues[2] = 1;
+        });
+    resetMenu->setPosition(Vec2(onclr::vsize.width * 0.5,
+        onclr::vsize.height - 228 * s_ratio));
+    resetMenu->setOpacity(0);
+    resetMenu->runAction(FADE_IN_DELAY(1.6));
+    // Reuse 'menu', protect the enviRAMent
+    menu = Menu::create(resetMenu, nullptr);
+    menu->setPosition(Vec2::ZERO);
+    this->addChild(menu);
 
     return true;
 }
