@@ -98,6 +98,9 @@ bool Gameplay::init()
         // DEBUG-USE: press 'A' to set all colour values back to 255.
         // For testing fever mode.
         else if (key == EventKeyboard::KeyCode::KEY_A) { _r = _g = _b = 255; return; }
+        // DEBUG-USE: press 'B' to set all colour under the fireline
+        // For testing commit 'Prevent off colour but nowhere to get that colour'
+        else if (key == EventKeyboard::KeyCode::KEY_B) { _r = _g = _b = 64; return; }
         else return;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
@@ -231,6 +234,24 @@ void Gameplay::generatePhoton()
         b = SineVelPhoton::randomGen();
     else
         b = Bomb::randomGen();
+    // Prevent off colour but nowhere to get that colour
+    // If we're running out of red and blue, we'll get a magenta photon here
+    Color3B c = Color3B::BLACK;
+    for (int i = 0; i < 3; i++)
+        if (_warnerShown[i]) {
+            c.r += _warnColours[i].r;
+            c.g += _warnColours[i].g;
+            c.b += _warnColours[i].b;
+        }
+    if (c != Color3B::BLACK) {  // Oh!! We ran out of one or even more colour(s)...
+        b = Photon::randomGen();    // we just need a normal photon
+        if (c == Color3B::WHITE)    // Wow!! Nearly black... Running out of all colours
+            if (rand() % 3) c.r = 0;
+            else if (rand() % 2) c.g = 0;
+            else c.b = 0;           // Remove one of the colours, otherwise it'll be invisible
+        b->setColor(c);         // ... and put the needed colour there
+        b->setColourValue(std::max(156, b->getColourValue()));
+    }
     float b_radius = b->getRadius();
     // Generate a random position tangent to the border
     // > The radiation is emitted tangent to these trajectories. (Scientific American)
