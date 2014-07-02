@@ -22,7 +22,8 @@ LOCAL_SRC_FILES := oncolour/main.cpp \
                    ../../Classes/widgets/Bubble.cpp \
                    ../../Classes/widgets/BorderedBubble.cpp \
                    ../../Classes/widgets/Photon.cpp \
-                   ../../Classes/widgets/SineVelPhoton.cpp
+                   ../../Classes/widgets/SineVelPhoton.cpp \
+                   ../../Classes/widgets/Bomb.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
                     $(LOCAL_PATH)/../../Classes/scenes \
