@@ -36,6 +36,7 @@ void Gameplay::init2()
         "images/back.png", "images/back.png", CC_CALLBACK_1(Gameplay::goBack, this));
     backItem->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
     backItem->setNormalizedPosition(Vec2::ANCHOR_TOP_LEFT);
+    backItem->setScale((onclr::ratio - 1) * 0.4 + 1);
     auto menu = Menu::create(backItem, NULL);
     menu->setPosition(Vec2::ZERO);
     scene->addChild(menu, 6);
@@ -74,7 +75,9 @@ bool Gameplay::init()
     _sensitivity = UserDefault::getInstance()->getFloatForKey("Senvitivity", 1);
 
     // The player
-    _player = BorderedBubble::create(onclr::player_radius, 3, Color3B::WHITE);
+    _player = BorderedBubble::create(
+        onclr::player_radius * onclr::bubble_scale,
+        3 * onclr::bubble_scale, Color3B::WHITE);
     // Don't use normalized positions here since we need to set absolute position later
     // What's more, its parent's size is onclr::mapsize!
     _player->setPosition(Vec2(onclr::mapsize.width / 2, onclr::mapsize.height / 2));

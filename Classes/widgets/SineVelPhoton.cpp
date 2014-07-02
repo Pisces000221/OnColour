@@ -37,19 +37,12 @@ void SineVelPhoton::move(float dt)
 
 SineVelPhoton *SineVelPhoton::randomGen()
 {
-    //SineVelPhoton *b = static_cast<SineVelPhoton *>(Photon::randomGen());
-    float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
-    float b_period = RAND_BTW(onclr::sinevel_photon_minperiod, onclr::sinevel_photon_maxperiod);
-    float b_amplitude = RAND_BTW(onclr::sinevel_photon_minam, onclr::sinevel_photon_maxam);
-    int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
-    int b_colour_idx = rand() % SineVelPhoton::sin_colour_ct;
-    float b_hugtime = RAND_RATE(b_radius, 
-        onclr::photon_minradius, onclr::photon_maxradius,
-        onclr::photon_minhugtime, onclr::photon_maxhugtime);
-    SineVelPhoton *b = SineVelPhoton::create(b_radius, SineVelPhoton::sin_colours[b_colour_idx]);
-    b->setPeriod(b_period);
-    b->setAmplitude(b_amplitude);
-    b->setColourValue(b_colourval);
-    b->setHugTime(b_hugtime);
+    float radius = PHOTON_RADIUS;
+    SineVelPhoton *b = SineVelPhoton::create(
+        radius, SineVelPhoton::sin_colours[rand() % SineVelPhoton::sin_colour_ct]);
+    b->setPeriod(SINPHOTON_PERIOD);
+    b->setAmplitude(SINPHOTON_AMPLITUDE);
+    b->setColourValue(PHOTON_COLOURVAL);
+    b->setHugTime(PHOTON_HUGTIME(radius));
     return b;
 }

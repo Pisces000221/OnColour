@@ -30,9 +30,12 @@ bool Startup::init()
         }), nullptr));
 
     // The popping bubble
-    auto bubble = Bubble::create(20, Color3B(c[0], c[1], c[2]));
-    bubble->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-    bubble->setPosition(Vec2(onclr::vsize.width - 4, onclr::vsize.height - 4));
+    auto bubble = Bubble::create(20 * onclr::ratio, Color3B(c[0], c[1], c[2]));
+    bubble->setAnchorPoint(Vec2(0, 0.7));
+    Vec2 titlePos = titleLabel->getNormalizedPosition();
+    Size titleSize = titleLabel->getContentSize();
+    bubble->setPosition(Vec2(titlePos.x * onclr::vsize.width + titleSize.width / 2 + 6,
+        titlePos.y * onclr::vsize.height + titleSize.height / 2 - 1));
     bubble->setScale(0);
     bubble->runAction(Sequence::create(
         DelayTime::create(1.5),

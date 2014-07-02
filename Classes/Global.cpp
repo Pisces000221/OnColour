@@ -28,15 +28,19 @@ const float sinevel_photon_possib = 0.35f;
 const float bomb_possib = 0.05f;
 
 cocos2d::Size vsize;
+float ratio;
+float bubble_scale;
 void init()
 {
     vsize = Director::getInstance()->getVisibleSize();
+    ratio = vsize.width / 480.0;
+    bubble_scale = (ratio - 1) * 0.4 + 1;
 }
 
 #define GLOBAL_REGULAR_FONT "fonts/FiraSans_400.otf"
 #define GLOBAL_BOLD_FONT    "fonts/FiraSans_700.otf"
 
-Label *label(const char *str, int fontsize, bool isbold,
+Label *label(std::string str, int fontsize, bool isbold,
     Color3B colour, TextHAlignment alignment, int linewidth)
 {
     Label *r = Label::createWithTTF(

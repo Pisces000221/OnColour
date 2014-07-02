@@ -2,6 +2,7 @@
 #define __OnColour__Global_h__
 
 #include "cocos2d.h"
+#include <string>
 
 namespace onclr {
 
@@ -53,7 +54,18 @@ namespace onclr {
         FadeIn::create(0.4), \
         CallFunc::create([]() { Director::getInstance()->popScene(); }), nullptr)); } while (0)
 
+// Used in Photon, SineVelPhoton, Bomb
+#define PHOTON_RADIUS (RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius) * onclr::bubble_scale)
+#define PHOTON_COLOURVAL RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval)
+#define PHOTON_HUGTIME(__radius__) RAND_RATE(__radius__, \
+    onclr::photon_minradius, onclr::photon_maxradius, \
+    onclr::photon_minhugtime, onclr::photon_maxhugtime)
+#define SINPHOTON_PERIOD RAND_BTW(onclr::sinevel_photon_minperiod, onclr::sinevel_photon_maxperiod)
+#define SINPHOTON_AMPLITUDE RAND_BTW(onclr::sinevel_photon_minam, onclr::sinevel_photon_maxam)
+
 extern cocos2d::Size vsize;
+extern float ratio;
+extern float bubble_scale;
 void init();
 extern const cocos2d::Size mapsize;
 extern const float photongen_mintime;
@@ -77,7 +89,7 @@ extern const float normal_photon_possib;
 extern const float sinevel_photon_possib;
 extern const float bomb_possib;
 
-cocos2d::Label *label(const char *str, int fontsize, bool isbold = false,
+cocos2d::Label *label(std::string str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,
     cocos2d::TextHAlignment alignment = cocos2d::TextHAlignment::LEFT, int linewidth = 0);
 

@@ -43,14 +43,9 @@ void Photon::move(float dt)
 
 Photon *Photon::randomGen()
 {
-    float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
-    int b_colourval = RAND_BTW_INT(onclr::photon_mincolourval, onclr::photon_maxcolourval);
-    int b_colour_idx = rand() % Photon::colour_ct;
-    float b_hugtime = RAND_RATE(b_radius, 
-        onclr::photon_minradius, onclr::photon_maxradius,
-        onclr::photon_minhugtime, onclr::photon_maxhugtime);
-    Photon *b = Photon::create(b_radius, Photon::colours[b_colour_idx]);
-    b->setColourValue(b_colourval);
-    b->setHugTime(b_hugtime);
+    float radius = PHOTON_RADIUS;
+    Photon *b = Photon::create(radius, Photon::colours[rand() % Photon::colour_ct]);
+    b->setColourValue(PHOTON_COLOURVAL);
+    b->setHugTime(PHOTON_HUGTIME(radius));
     return b;
 }

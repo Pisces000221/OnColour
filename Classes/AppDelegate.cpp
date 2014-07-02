@@ -9,7 +9,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if (!glview) {
-        glview = GLView::createWithRect("On Colour for PC", Rect(0, 0, 480, 320));
+#if IS_ON_PC
+        glview = GLView::createWithRect("On Colour for PC", Rect(0, 0, 720, 480));
+#else
+        glview = GLView::createWithRect("On Colour", Rect(0, 0, 480, 320));
+#endif
         director->setOpenGLView(glview);
     }
     director->setDisplayStats(true);

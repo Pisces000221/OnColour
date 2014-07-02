@@ -15,7 +15,6 @@ bool Bomb::init(float radius)
 
 Bomb *Bomb::randomGen()
 {
-    float b_radius = RAND_BTW(onclr::photon_minradius, onclr::photon_maxradius);
-    Bomb *b = Bomb::create(b_radius * 0.5); // bombs cannot be TOO large
+    Bomb *b = Bomb::create(PHOTON_RADIUS * 0.5); // bombs cannot be TOO large
     return b;
 }
