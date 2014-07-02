@@ -33,7 +33,7 @@ protected:
     void checkHugs(float dt);
     bool huggy(Photon *photon);
     bool semi_huggy(Photon *photon);
-    bool checkFever();
+    void checkFever();
 
     bool _gamePaused;
     BorderedBubble *_player;

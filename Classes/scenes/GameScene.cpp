@@ -19,6 +19,8 @@ const char *Gameplay::_warnMessage[] = {
 #define KEYBOARD_SCHEDULE_KEY "KEYBD_BALLMOVE"
 #define KEYBOARD_SCHEDULE_KEY_2 "KEYBD_BALLMOVE_SECOND"
 #define TICK_SCHEDULE_KEY "GAME_TICKER"
+#define FEVER_ANIMATION_TAG 492357816
+#define FEVER_ANIMATION_TAG_2 1035369
 
 #define WARNER_POS(i) cocos2d::Vec2( \
     onclr::vsize.width * 0.5, onclr::vsize.height * 0.5 - 32 * i - 40)
@@ -93,6 +95,9 @@ bool Gameplay::init()
         else if (key == EventKeyboard::KeyCode::KEY_DOWN_ARROW) y = -1;
         else if (key == EventKeyboard::KeyCode::KEY_LEFT_ARROW) x = -1;
         else if (key == EventKeyboard::KeyCode::KEY_RIGHT_ARROW) x = 1;
+        // DEBUG-USE: press 'A' to set all colour values back to 255.
+        // For testing fever mode.
+        else if (key == EventKeyboard::KeyCode::KEY_A) { _r = _g = _b = 255; return; }
         else return;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
@@ -176,7 +181,7 @@ void Gameplay::tick(float dt)
 {
     this->movePhotonsAndShowPointers(dt);
     if (_gamePaused) return;
-    _score += dt;
+    if (_isInFeverMode) _score += dt * 2; else _score += dt;
     char s[16]; sprintf(s, "%d s", (int)_score);
     _scoreDisplayer->setString(s);
     // Update colour
@@ -205,13 +210,7 @@ void Gameplay::tick(float dt)
         }
     }
     // Check if is in fever mode
-    bool curIsInFeverMode = this->checkFever();
-    if (curIsInFeverMode && !_isInFeverMode) {
-        // TODO: enter fever mode.
-    } else if (!curIsInFeverMode && _isInFeverMode) {
-        // TODO: leave fever mode.
-    }
-    _isInFeverMode = curIsInFeverMode;
+    this->checkFever();
     // Check if is generating bubble
     _timeToLastPhotonGen -= dt;
     if (_timeToLastPhotonGen <= 0) {
@@ -415,9 +414,30 @@ bool Gameplay::semi_huggy(Photon *photon)
     return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
 }
 
-bool Gameplay::checkFever()
+void Gameplay::checkFever()
 {
-    return false;
+    bool curIsInFeverMode = _r >= onclr::fever_lowerbound &&
+        _g >= onclr::fever_lowerbound && _b >= onclr::fever_lowerbound;
+    if (curIsInFeverMode && !_isInFeverMode) {
+        CCLOG("FEVER!!!!");
+        _isInFeverMode = true;
+        auto action = RepeatForever::create(Sequence::create(
+            DelayTime::create(0.6),
+            CallFunc::create([this] {
+                auto a2 = TintTo::create(0.6, rand() % 255, rand() % 255, rand() % 255);
+                a2->setTag(FEVER_ANIMATION_TAG_2);
+                _scoreDisplayer->runAction(a2);
+            }), nullptr));
+        action->setTag(FEVER_ANIMATION_TAG);
+        _scoreDisplayer->runAction(action);
+    } else if (!curIsInFeverMode && _isInFeverMode) {
+        CCLOG("Back to normal");
+        _isInFeverMode = false;
+        _scoreDisplayer->stopActionByTag(FEVER_ANIMATION_TAG_2);
+        _scoreDisplayer->stopActionByTag(FEVER_ANIMATION_TAG);
+        _scoreDisplayer->runAction(TintTo::create(0.6, 0, 0, 0));
+    }
+    _isInFeverMode = curIsInFeverMode;
 }
 
 // copied from HexBizarre/GameScene

@@ -26,6 +26,7 @@ const float sinevel_photon_maxam = 0.7f;
 const float normal_photon_possib = 0.6f;
 const float sinevel_photon_possib = 0.35f;
 const float bomb_possib = 0.05f;
+const float fever_lowerbound = 192.0f;
 
 cocos2d::Size vsize;
 float ratio;
