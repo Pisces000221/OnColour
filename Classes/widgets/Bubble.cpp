@@ -10,11 +10,16 @@ bool Bubble::init(float radius, cocos2d::Color3B colour)
     else if (radius <= 72) _sprite = Sprite::create("images/circle_1.5x.png");
     else if (radius <= 96) _sprite = Sprite::create("images/circle_2x.png");
     else _sprite = Sprite::create("images/circle_3x.png");
-    _sprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
-    _sprite->setPosition(Vec2::ZERO);
+    _sprite->setNormalizedPosition(Vec2(0.5, 0.5));
     _sprite->setScale(2 * radius / _sprite->getContentSize().width);
     this->addChild(_sprite);
     this->setAnchorPoint(Vec2(0.5, 0.5));
     this->setColor(colour);
     return true;
+}
+
+void Bubble::setRadius(float r)
+{
+    _sprite->runAction(ScaleBy::create(0.2, r / _radius));
+    _radius = r;
 }

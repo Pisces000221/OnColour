@@ -74,6 +74,8 @@ extern const cocos2d::Size mapsize;
 extern const float photongen_mintime;
 extern const float photongen_maxtime;
 extern const float player_radius;
+extern const float player_max_radius;
+extern const float player_radius_inc_factor;
 extern const float player_colour_initial;
 extern const float player_colour_lost;
 extern const float player_colour_warning;

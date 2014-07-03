@@ -77,9 +77,9 @@ bool Gameplay::init()
     _sensitivity = UserDefault::getInstance()->getFloatForKey("Senvitivity", 1);
 
     // The player
+    _playerRadius = onclr::player_radius * onclr::bubble_scale;
     _player = BorderedBubble::create(
-        onclr::player_radius * onclr::bubble_scale,
-        3 * onclr::bubble_scale, GREY_3B(onclr::player_colour_initial));
+        _playerRadius, 3 * onclr::bubble_scale, GREY_3B(onclr::player_colour_initial));
     // Don't use normalized positions here since we need to set absolute position later
     // What's more, its parent's size is onclr::mapsize!
     _player->setPosition(Vec2(onclr::mapsize.width / 2, onclr::mapsize.height / 2));
@@ -103,6 +103,8 @@ bool Gameplay::init()
         else if (key == EventKeyboard::KeyCode::KEY_B) { _r = _g = _b = 64; return; }
         // DEBUG-USE: press 'C' to print player's colour at present
         else if (key == EventKeyboard::KeyCode::KEY_C) { CCLOG("%.2f, %.2f, %.2f", _r, _g, _b); return; }
+        // DEBUG-USE: press 'D' to increase player's radius
+        else if (key == EventKeyboard::KeyCode::KEY_D) { increasePlayerSize(); return; }
         else return;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
@@ -403,6 +405,8 @@ void Gameplay::checkHugs(float dt)
                     if (_r > 255) _r = 255;
                     if (_g > 255) _g = 255;
                     if (_b > 255) _b = 255;
+                    // ... And we get weight and size, don't we?
+                    this->increasePlayerSize();
                     // Remove finally. Otherwise it causes wrong results
                     this->removePhoton(photon);
                 }
@@ -428,12 +432,12 @@ void Gameplay::checkHugs(float dt)
 
 bool Gameplay::huggy(Photon *photon)
 {
-    float r = (photon->getRadius() - onclr::player_radius);
+    float r = (photon->getRadius() - _playerRadius);
     return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
 }
 bool Gameplay::semi_huggy(Photon *photon)
 {
-    float r = photon->getRadius() + onclr::player_radius;
+    float r = photon->getRadius() + _playerRadius;
     return photon->getPosition().distanceSquared(_player->getPosition()) <= r * r;
 }
 
@@ -461,6 +465,13 @@ void Gameplay::checkFever()
         _scoreDisplayer->runAction(TintTo::create(0.6, 0, 0, 0));
     }
     _isInFeverMode = curIsInFeverMode;
+}
+
+void Gameplay::increasePlayerSize()
+{
+    _playerRadius += onclr::player_radius_inc_factor *
+        (onclr::player_max_radius * onclr::bubble_scale - _playerRadius);
+    _player->setRadius(_playerRadius);
 }
 
 // copied from HexBizarre/GameScene
