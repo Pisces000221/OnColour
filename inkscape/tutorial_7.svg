@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="720"
+   height="480"
+   id="svg5372"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="新建文档 12">
+  <defs
+     id="defs5374" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.2645833"
+     inkscape:cx="360"
+     inkscape:cy="240"
+     inkscape:document-units="px"
+     inkscape:current-layer="g5908"
+     showgrid="false"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5377">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-572.36218)">
+    <g
+       id="g5908">
+      <path
+         transform="translate(0,572.36218)"
+         d="m 105.17299,71.960464 a 37.166393,37.166393 0 1 1 -74.332791,0 37.166393,37.166393 0 1 1 74.332791,0 z"
+         sodipodi:ry="37.166393"
+         sodipodi:rx="37.166393"
+         sodipodi:cy="71.960464"
+         sodipodi:cx="68.006592"
+         id="path5380"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text5892"
+         y="619.80865"
+         x="125.73311"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ff0000;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5898"
+           y="619.80865"
+           x="125.73311"
+           sodipodi:role="line">R: 0</tspan><tspan
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#00ff00;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5904"
+           y="649.80865"
+           x="125.73311"
+           sodipodi:role="line">G: 0</tspan><tspan
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5906"
+           y="679.80865"
+           x="125.73311"
+           sodipodi:role="line">B: 0</tspan></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text5892-3"
+         y="800.43738"
+         x="205.70552"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:36px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ff0000;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5898-0"
+           y="800.43738"
+           x="205.70552"
+           sodipodi:role="line">R &gt;= 0.5</tspan><tspan
+           style="font-size:36px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#00ff00;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5904-9"
+           y="845.43738"
+           x="205.70552"
+           sodipodi:role="line">G &gt;= 0.5</tspan><tspan
+           style="font-size:36px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5906-7"
+           y="890.43738"
+           x="205.70552"
+           sodipodi:role="line">B &gt;= 0.5</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="373.26953"
+         y="877.73798"
+         id="text5968"
+         sodipodi:linespacing="125%"
+         transform="matrix(0.99542684,-0.09552696,0.09552696,0.99542684,0,0)"><tspan
+           sodipodi:role="line"
+           id="tspan5970"
+           x="373.26953"
+           y="877.73798"
+           style="font-size:64px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT Bold">FEVER!!!</tspan><tspan
+           sodipodi:role="line"
+           x="373.26953"
+           y="944.18958"
+           style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT Bold"
+           id="tspan5972">  Score x2</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+         d="m 352.97561,269.26829 79.02439,0"
+         id="path5974"
+         inkscape:connector-curvature="0"
+         transform="translate(0,572.36218)" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 417.29401,831.88466 14.92683,9.65853 -14.92683,10.53659"
+         id="path5976"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccc" />
+    </g>
+    <g
+       id="g5915"
+       transform="translate(235.86483,0)">
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5917"
+         sodipodi:cx="68.006592"
+         sodipodi:cy="71.960464"
+         sodipodi:rx="37.166393"
+         sodipodi:ry="37.166393"
+         d="m 105.17299,71.960464 c 0,20.526433 -16.639966,37.166396 -37.166398,37.166396 -20.526432,0 -37.166393,-16.639963 -37.166393,-37.166396 0,-20.526432 16.639961,-37.166393 37.166393,-37.166393 20.526432,0 37.166398,16.639961 37.166398,37.166393 z"
+         transform="translate(0,572.36218)" />
+      <text
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="125.73311"
+         y="619.80865"
+         id="text5919"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           x="125.73311"
+           y="619.80865"
+           id="tspan5921"
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ff0000;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT">R: 1</tspan><tspan
+           sodipodi:role="line"
+           x="125.73311"
+           y="649.80865"
+           id="tspan5923"
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#00ff00;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT">G: 1</tspan><tspan
+           sodipodi:role="line"
+           x="125.73311"
+           y="679.80865"
+           id="tspan5925"
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT">B: 1</tspan></text>
+    </g>
+    <g
+       transform="translate(458.88922,0)"
+       id="g5927">
+      <path
+         transform="translate(0,572.36218)"
+         d="m 105.17299,71.960464 c 0,20.526433 -16.639966,37.166396 -37.166398,37.166396 -20.526432,0 -37.166393,-16.639963 -37.166393,-37.166396 0,-20.526432 16.639961,-37.166393 37.166393,-37.166393 20.526432,0 37.166398,16.639961 37.166398,37.166393 z"
+         sodipodi:ry="37.166393"
+         sodipodi:rx="37.166393"
+         sodipodi:cy="71.960464"
+         sodipodi:cx="68.006592"
+         id="path5929"
+         style="color:#000000;fill:#0033ff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text5931"
+         y="619.80865"
+         x="125.73311"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ff0000;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5933"
+           y="619.80865"
+           x="125.73311"
+           sodipodi:role="line">R: 0</tspan><tspan
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#00ff00;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5935"
+           y="649.80865"
+           x="125.73311"
+           sodipodi:role="line">G: 0.2</tspan><tspan
+           style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
+           id="tspan5937"
+           y="679.80865"
+           x="125.73311"
+           sodipodi:role="line">B: 1</tspan></text>
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:#cbfac5;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5939"
+         sodipodi:cx="112.39024"
+         sodipodi:cy="264.87805"
+         sodipodi:rx="65.853661"
+         sodipodi:ry="65.853661"
+         d="m 178.2439,264.87805 a 65.853661,65.853661 0 1 1 -131.707317,0 65.853661,65.853661 0 1 1 131.707317,0 z"
+         transform="translate(-458.88922,572.36218)" />
+    </g>
+  </g>
+</svg>
