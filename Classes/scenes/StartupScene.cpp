@@ -38,9 +38,7 @@ bool Startup::init()
     bubble->setPosition(Vec2(titlePos.x * onclr::vsize.width + titleSize.width / 2 + 6,
         titlePos.y * onclr::vsize.height + titleSize.height / 2 - 1));
     bubble->setScale(0);
-    bubble->runAction(Sequence::create(
-        DelayTime::create(1.5),
-        EaseElasticOut::create(ScaleTo::create(0.7, 1)), nullptr));
+    bubble->pop(1.5);
     this->addChild(bubble);
 
     auto newGameMenu = MenuItemLabelTint::create(

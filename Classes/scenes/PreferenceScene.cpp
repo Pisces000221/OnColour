@@ -1,5 +1,6 @@
 #include "PreferenceScene.h"
 #include "Global.h"
+#include "ToggleBubble.h"
 #include "MenuItemLabelTint.h"
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
@@ -25,6 +26,7 @@ bool PreferenceLayer::init()
     _sliderValues[0] = ud->getFloatForKey("Senvitivity", 1);
     _sliderValues[1] = ud->getFloatForKey("Sound_Vol", 1);
     _sliderValues[2] = ud->getFloatForKey("FX_Vol", 1);
+    _toggleValues[0] = ud->getBoolForKey("Debug_Info_Vis", true);
     CCLOG("sensitivity, soundvol, fxvol = %f, %f, %f",
         _sliderValues[0], _sliderValues[1], _sliderValues[2]);
 
@@ -141,6 +143,27 @@ bool PreferenceLayer::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
+    // Toggle debug information visibility
+    auto label_4 = onclr::label("Debug information", 28 * s_ratio);
+    label_4->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    label_4->setPosition(Vec2(6, onclr::vsize.height - 268 * s_ratio));
+    label_4->setColor(Color3B::BLACK);
+    this->addChild(label_4);
+    label_4->setOpacity(0);
+    label_4->runAction(FADE_IN_DELAY(1.8));
+    float bubble_w = 0.85 * s_ratio * 20;
+    auto toggle_4 = ToggleBubble::create(bubble_w, Color3B(255, 255, 0),
+        [this](Ref *sender) {
+            _toggleValues[0] = static_cast<ToggleBubble *>(sender)->isOn();
+            Director::getInstance()->setDisplayStats(_toggleValues[0]);
+        });
+    toggle_4->setPosition(Vec2(label_4->getContentSize().width + bubble_w + 12,
+        onclr::vsize.height - 268 * s_ratio));
+    toggle_4->setOn(_toggleValues[0]);
+    toggle_4->setOpacity(0);
+    toggle_4->runAction(FADE_IN_DELAY(1.8));
+    this->addChild(toggle_4);
+
     return true;
 }
 
@@ -150,6 +173,7 @@ void PreferenceLayer::goBack(Ref *sender)
     ud->setFloatForKey("Senvitivity", _sliderValues[0]);
     ud->setFloatForKey("Sound_Vol", _sliderValues[1]);
     ud->setFloatForKey("FX_Vol", _sliderValues[2]);
+    ud->setBoolForKey("Debug_Info_Vis", _toggleValues[0]);
     ud->flush();
     GO_BACK_ANIMATED;
 }

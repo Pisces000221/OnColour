@@ -16,7 +16,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
         director->setOpenGLView(glview);
     }
-    director->setDisplayStats(true);
+    director->setDisplayStats(UserDefault::getInstance()->getBoolForKey("Debug_Info_Vis", true));
     director->setAnimationInterval(1.0 / 60);
     // Turn off at the very beginning. We'll turn it on later
     Device::setAccelerometerEnabled(false);

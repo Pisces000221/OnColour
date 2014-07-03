@@ -15,6 +15,7 @@ public:
 
 protected:
     float _sliderValues[3];
+    bool _toggleValues[1];
 };
 
 #endif

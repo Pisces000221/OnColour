@@ -21,6 +21,8 @@ public:
     virtual void setRadius(float r);
     inline float getRadiusSq() { return _radius * _radius; }
 
+    void pop(float delay = 0, float duration = 0.7f, float scale = 1);
+
 protected:
     float _radius;
     cocos2d::Sprite *_sprite;

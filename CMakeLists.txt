@@ -65,6 +65,7 @@ set(GAME_SRC
   Classes/scenes/PreferenceScene.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
+  Classes/widgets/ToggleBubble.cpp
   Classes/widgets/BorderedBubble.cpp
   Classes/widgets/Photon.cpp
   Classes/widgets/SineVelPhoton.cpp
@@ -83,6 +84,7 @@ set(GAME_SRC
   Classes/scenes/PreferenceScene.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
+  Classes/widgets/ToggleBubble.cpp
   Classes/widgets/BorderedBubble.cpp
   Classes/widgets/Photon.cpp
   Classes/widgets/SineVelPhoton.cpp
