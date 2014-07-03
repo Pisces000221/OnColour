@@ -18,7 +18,9 @@ public:
     }
     virtual bool init(float radius, cocos2d::Color3B colour);
     void setPeriod(float period) { _period = period; }
+    float getPeriod() { return _period; }
     void setAmplitude(float amplitude) { _amplitude = amplitude; }
+    float getAmplitude() { return _amplitude; }
     virtual void move(float dt);
 
     static const int sin_colour_ct = 3;

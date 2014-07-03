@@ -34,7 +34,7 @@ protected:
     bool huggy(Photon *photon);
     bool semi_huggy(Photon *photon);
     void checkFever();
-    void increasePlayerSize();
+    void increaseDifficultyRate();
 
     bool _gamePaused;
     BorderedBubble *_player;
@@ -47,6 +47,7 @@ protected:
     static const char *_warnMessage[3];
     float _score;
     float _playerRadius;
+    float _difficulty_rate;
     float _timeToLastPhotonGen;
     float _sensitivity;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];

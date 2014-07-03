@@ -72,6 +72,7 @@ bool Gameplay::init()
     _photonHugID = 0;
     _r = _g = _b = onclr::player_colour_initial;
     _isInFeverMode = _gamePaused = false;
+    _difficulty_rate = 1;
 
     // Load sensitivity preference
     _sensitivity = UserDefault::getInstance()->getFloatForKey("Senvitivity", 1);
@@ -103,8 +104,8 @@ bool Gameplay::init()
         else if (key == EventKeyboard::KeyCode::KEY_B) { _r = _g = _b = 64; return; }
         // DEBUG-USE: press 'C' to print player's colour at present
         else if (key == EventKeyboard::KeyCode::KEY_C) { CCLOG("%.2f, %.2f, %.2f", _r, _g, _b); return; }
-        // DEBUG-USE: press 'D' to increase player's radius
-        else if (key == EventKeyboard::KeyCode::KEY_D) { increasePlayerSize(); return; }
+        // DEBUG-USE: press 'D' to increase difficulty
+        else if (key == EventKeyboard::KeyCode::KEY_D) { increaseDifficultyRate(); return; }
         else return;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
@@ -234,9 +235,12 @@ void Gameplay::generatePhoton()
     float a = RAND_0_1;
     if (a < onclr::normal_photon_possib)
         b = Photon::randomGen();
-    else if (a < onclr::normal_photon_possib + onclr::sinevel_photon_possib)
-        b = SineVelPhoton::randomGen();
-    else
+    else if (a < onclr::normal_photon_possib + onclr::sinevel_photon_possib) {
+        auto bb = SineVelPhoton::randomGen();
+        bb->setPeriod(bb->getPeriod() / _difficulty_rate);
+        bb->setAmplitude(bb->getAmplitude() * _difficulty_rate);
+        b = bb;
+    } else
         b = Bomb::randomGen();
     // Prevent off colour but nowhere to get that colour
     // If we're running out of red and blue, we'll get a magenta photon here
@@ -272,7 +276,7 @@ void Gameplay::generatePhoton()
     // Generate a random direction that goes into the screen
     float destX = RAND_BTW(b_radius, onclr::mapsize.width - b_radius);
     float destY = RAND_BTW(b_radius, onclr::mapsize.height - b_radius);
-    b->setVelocity(RAND_BTW(onclr::photon_minvelocity, onclr::photon_maxvelocity),
+    b->setVelocity(_difficulty_rate * RAND_BTW(onclr::photon_minvelocity, onclr::photon_maxvelocity),
         atan2f(destX - b->getPositionX(), destY - b->getPositionY()));  // why it's x/y??
     // MY CODE WORKS, I DON'T KNOW WHY
     _photons.pushBack(b);
@@ -406,7 +410,7 @@ void Gameplay::checkHugs(float dt)
                     if (_g > 255) _g = 255;
                     if (_b > 255) _b = 255;
                     // ... And we get weight and size, don't we?
-                    this->increasePlayerSize();
+                    this->increaseDifficultyRate();
                     // Remove finally. Otherwise it causes wrong results
                     this->removePhoton(photon);
                 }
@@ -467,11 +471,10 @@ void Gameplay::checkFever()
     _isInFeverMode = curIsInFeverMode;
 }
 
-void Gameplay::increasePlayerSize()
+void Gameplay::increaseDifficultyRate()
 {
-    _playerRadius += onclr::player_radius_inc_factor *
-        (onclr::player_max_radius * onclr::bubble_scale - _playerRadius);
-    _player->setRadius(_playerRadius);
+    if (_difficulty_rate < onclr::max_difficulty_rate)
+        _difficulty_rate += onclr::difficulty_rate_increment;
 }
 
 // copied from HexBizarre/GameScene
