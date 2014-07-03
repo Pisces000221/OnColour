@@ -9,8 +9,10 @@ const Size mapsize = Size(1200, 800);
 const float photongen_mintime = 1.8f;
 const float photongen_maxtime = 4.0f;
 const float player_radius = 30.0f;
+const float player_colour_initial = 156.0f;
 const float player_colour_lost = 8.0f;
 const float player_colour_warning = 64.0f;
+const float player_colour_fever = 128.0f;
 const float photon_minradius = 36.0f;
 const float photon_maxradius = 72.0f;
 const int photon_mincolourval = 64;
@@ -26,7 +28,6 @@ const float sinevel_photon_maxam = 0.7f;
 const float normal_photon_possib = 0.6f;
 const float sinevel_photon_possib = 0.35f;
 const float bomb_possib = 0.05f;
-const float fever_lowerbound = 192.0f;
 
 cocos2d::Size vsize;
 float ratio;

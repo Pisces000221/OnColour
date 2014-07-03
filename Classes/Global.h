@@ -24,6 +24,9 @@ namespace onclr {
 #define RAND_BTW_INT(_min, _max) (rand() % (_max - _min) + _min)    // [_min, max)
 #define RAND_RATE(_val, _min, _max, _min2, _max2) \
     (((_val - _min) / (_max - _min)) * (_max2 - _min2) + _min2)
+#define GREY_3B(_g) cocos2d::Color3B(_g, _g, _g)
+#define GREY_4B(_g, _a) cocos2d::Color4B(_g, _g, _g, _a)
+#define GREY_4F(_g, _a) cocos2d::Color4F(_g, _g, _g, _a)
 
 // Used mainly in GameScene
 #define FIX_POS(_pos, _min, _max) \
@@ -71,8 +74,10 @@ extern const cocos2d::Size mapsize;
 extern const float photongen_mintime;
 extern const float photongen_maxtime;
 extern const float player_radius;
+extern const float player_colour_initial;
 extern const float player_colour_lost;
 extern const float player_colour_warning;
+extern const float player_colour_fever;
 extern const float photon_minradius;
 extern const float photon_maxradius;
 extern const int photon_mincolourval;
@@ -88,7 +93,6 @@ extern const float sinevel_photon_maxam;
 extern const float normal_photon_possib;
 extern const float sinevel_photon_possib;
 extern const float bomb_possib;
-extern const float fever_lowerbound;
 
 cocos2d::Label *label(std::string str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,

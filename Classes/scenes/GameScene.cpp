@@ -70,7 +70,7 @@ bool Gameplay::init()
     _score = 0.0f;
     _timeToLastPhotonGen = _photonHugTime = 0.0f;
     _photonHugID = 0;
-    _r = _g = _b = 255.0f;
+    _r = _g = _b = onclr::player_colour_initial;
     _isInFeverMode = _gamePaused = false;
 
     // Load sensitivity preference
@@ -79,7 +79,7 @@ bool Gameplay::init()
     // The player
     _player = BorderedBubble::create(
         onclr::player_radius * onclr::bubble_scale,
-        3 * onclr::bubble_scale, Color3B::WHITE);
+        3 * onclr::bubble_scale, GREY_3B(onclr::player_colour_initial));
     // Don't use normalized positions here since we need to set absolute position later
     // What's more, its parent's size is onclr::mapsize!
     _player->setPosition(Vec2(onclr::mapsize.width / 2, onclr::mapsize.height / 2));
@@ -101,6 +101,8 @@ bool Gameplay::init()
         // DEBUG-USE: press 'B' to set all colour under the fireline
         // For testing commit 'Prevent off colour but nowhere to get that colour'
         else if (key == EventKeyboard::KeyCode::KEY_B) { _r = _g = _b = 64; return; }
+        // DEBUG-USE: press 'C' to print player's colour at present
+        else if (key == EventKeyboard::KeyCode::KEY_C) { CCLOG("%.2f, %.2f, %.2f", _r, _g, _b); return; }
         else return;
         std::string s_key;
         if (this->getScheduler()->isScheduled(KEYBOARD_SCHEDULE_KEY, this)) {
@@ -437,8 +439,8 @@ bool Gameplay::semi_huggy(Photon *photon)
 
 void Gameplay::checkFever()
 {
-    bool curIsInFeverMode = _r >= onclr::fever_lowerbound &&
-        _g >= onclr::fever_lowerbound && _b >= onclr::fever_lowerbound;
+    bool curIsInFeverMode = _r >= onclr::player_colour_fever &&
+        _g >= onclr::player_colour_fever && _b >= onclr::player_colour_fever;
     if (curIsInFeverMode && !_isInFeverMode) {
         CCLOG("FEVER!!!!");
         _isInFeverMode = true;
