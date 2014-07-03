@@ -1,6 +1,7 @@
 #include "StartupScene.h"
 #include "GameScene.h"
 #include "PreferenceScene.h"
+#include "TutorialScene.h"
 #include "MenuItemLabelTint.h"
 #include "Bubble.h"
 #include "Global.h"
@@ -49,16 +50,17 @@ bool Startup::init()
         onclr::label("Preferences", 36 * s_ratio, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showPreferences, this));
     preferencesMenu->setNormalizedPosition(Vec2(0.5, 0.5));
     preferencesMenu->setOpacity(0);
-    auto menu = Menu::create(newGameMenu, preferencesMenu, nullptr);
+    auto tutorialMenu = MenuItemLabelTint::create(
+        onclr::label("How to play?", 36 * s_ratio, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showTutorial, this));
+    tutorialMenu->setNormalizedPosition(Vec2(0.5, 0.382));
+    tutorialMenu->setOpacity(0);
+    auto menu = Menu::create(newGameMenu, preferencesMenu, tutorialMenu, nullptr);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
-    newGameMenu->runAction(Sequence::create(
-        DelayTime::create(3),
-        FadeIn::create(0.6), nullptr));
-    preferencesMenu->runAction(Sequence::create(
-        DelayTime::create(3.1),
-        FadeIn::create(0.6), nullptr));
+    newGameMenu->runAction(FADE_IN_DELAY(3, 0.6));
+    preferencesMenu->runAction(FADE_IN_DELAY(3.1, 0.6));
+    tutorialMenu->runAction(FADE_IN_DELAY(3.2, 0.6));
 
     return true;
 }
@@ -71,4 +73,9 @@ void Startup::newGame(Ref *sender)
 void Startup::showPreferences(Ref *sender)
 {
     GO_TO_SCENE(PreferenceLayer);
+}
+
+void Startup::showTutorial(Ref *sender)
+{
+    GO_TO_SCENE(Tutorial);
 }

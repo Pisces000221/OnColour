@@ -13,6 +13,7 @@ public:
 
     void newGame(Ref *sender);
     void showPreferences(Ref *sender);
+    void showTutorial(Ref *sender);
 };
 
 #endif

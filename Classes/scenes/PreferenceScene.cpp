@@ -13,8 +13,6 @@ using namespace cocos2d;
     _s->loadBarTexture("images/slider_bar.png"); \
     _s->loadSlidBallTextures("images/circle.png", "images/circle.png", ""); \
     _s->loadProgressBarTexture("images/slider_progress.png"); } while (0)
-#define FADE_IN_DELAY(_t) Sequence::create( \
-        DelayTime::create(_t), FadeIn::create(0.3), nullptr)
 
 bool PreferenceLayer::init()
 {
@@ -33,12 +31,7 @@ bool PreferenceLayer::init()
     // WTF... we create a Scale9Sprite, and we're ready to link?!!!
     // Ehh... I think GCC has ignored that for us unless we use it...
     auto a = extension::Scale9Sprite::create();
-    auto backItem = MenuItemImage::create(
-        "images/back.png", "images/back.png",
-        CC_CALLBACK_1(PreferenceLayer::goBack, this));
-    backItem->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-    backItem->setNormalizedPosition(Vec2::ANCHOR_TOP_LEFT);
-    backItem->setScale((onclr::ratio - 1) * 0.4 + 1);
+    CREATE_GO_BACK_MENUITEM(PreferenceLayer, backItem);
     auto menu = Menu::create(backItem, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 6);
@@ -49,7 +42,7 @@ bool PreferenceLayer::init()
     title->setColor(Color3B::BLACK);
     title->setOpacity(0);
     this->addChild(title);
-    title->runAction(FADE_IN_DELAY(0.8));
+    title->runAction(FADE_IN_DELAY(0.8, 0.3));
 
     // Ball speed on PC and tilt sensitivity on tablets and phones
 #if IS_ON_PC
@@ -78,8 +71,8 @@ bool PreferenceLayer::init()
     this->addChild(slider_1);
     label_1->setOpacity(0);
     slider_1->setOpacity(0);
-    label_1->runAction(FADE_IN_DELAY(1.1));
-    slider_1->runAction(FADE_IN_DELAY(1.1));
+    label_1->runAction(FADE_IN_DELAY(1.1, 0.3));
+    slider_1->runAction(FADE_IN_DELAY(1.1, 0.3));
 
     // Music volume
     auto label_2 = onclr::label("Music volume", 28 * s_ratio);
@@ -101,8 +94,8 @@ bool PreferenceLayer::init()
     this->addChild(slider_2);
     label_2->setOpacity(0);
     slider_2->setOpacity(0);
-    label_2->runAction(FADE_IN_DELAY(1.25));
-    slider_2->runAction(FADE_IN_DELAY(1.25));
+    label_2->runAction(FADE_IN_DELAY(1.25, 0.3));
+    slider_2->runAction(FADE_IN_DELAY(1.25, 0.3));
 
     // Effects' volume
     auto label_3 = onclr::label("FX volume", 28 * s_ratio);
@@ -124,8 +117,8 @@ bool PreferenceLayer::init()
     this->addChild(slider_3);
     label_3->setOpacity(0);
     slider_3->setOpacity(0);
-    label_3->runAction(FADE_IN_DELAY(1.4));
-    slider_3->runAction(FADE_IN_DELAY(1.4));
+    label_3->runAction(FADE_IN_DELAY(1.4, 0.3));
+    slider_3->runAction(FADE_IN_DELAY(1.4, 0.3));
 
     auto resetMenu = MenuItemLabelTint::create(
         onclr::label("Reset to default", 32 * s_ratio, false, Color3B::BLACK),
@@ -137,7 +130,7 @@ bool PreferenceLayer::init()
     resetMenu->setPosition(Vec2(onclr::vsize.width * 0.5,
         onclr::vsize.height - 228 * s_ratio));
     resetMenu->setOpacity(0);
-    resetMenu->runAction(FADE_IN_DELAY(1.6));
+    resetMenu->runAction(FADE_IN_DELAY(1.6, 0.3));
     // Reuse 'menu', protect the enviRAMent
     menu = Menu::create(resetMenu, nullptr);
     menu->setPosition(Vec2::ZERO);
@@ -150,7 +143,7 @@ bool PreferenceLayer::init()
     label_4->setColor(Color3B::BLACK);
     this->addChild(label_4);
     label_4->setOpacity(0);
-    label_4->runAction(FADE_IN_DELAY(1.8));
+    label_4->runAction(FADE_IN_DELAY(1.8, 0.3));
     float bubble_w = 0.85 * s_ratio * 20;
     auto toggle_4 = ToggleBubble::create(bubble_w, Color3B(255, 255, 0),
         [this](Ref *sender) {
@@ -161,7 +154,7 @@ bool PreferenceLayer::init()
         onclr::vsize.height - 268 * s_ratio));
     toggle_4->setOn(_toggleValues[0]);
     toggle_4->setOpacity(0);
-    toggle_4->runAction(FADE_IN_DELAY(1.8));
+    toggle_4->runAction(FADE_IN_DELAY(1.8, 0.3));
     this->addChild(toggle_4);
 
     return true;

@@ -28,6 +28,9 @@ namespace onclr {
 #define GREY_4B(_g, _a) cocos2d::Color4B(_g, _g, _g, _a)
 #define GREY_4F(_g, _a) cocos2d::Color4F(_g, _g, _g, _a)
 
+#define FADE_IN_DELAY(_t, _dur) Sequence::create( \
+    DelayTime::create(_t), FadeIn::create(_dur), nullptr)
+
 // Used mainly in GameScene
 #define FIX_POS(_pos, _min, _max) \
     if (_pos < (_min)) _pos = (_min); else if (_pos > (_max)) _pos = (_max)
@@ -49,6 +52,13 @@ namespace onclr {
         FadeOut::create(0.4), \
         RemoveSelf::create(), nullptr)); } while (0)
 // Runs an animation and go back
+#define CREATE_GO_BACK_MENUITEM(_layername, _varname) \
+    MenuItemImage *_varname = MenuItemImage::create( \
+        "images/back.png", "images/back.png", \
+        CC_CALLBACK_1(_layername::goBack, this)); \
+    _varname->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT); \
+    _varname->setNormalizedPosition(Vec2::ANCHOR_TOP_LEFT); \
+    _varname->setScale((onclr::ratio - 1) * 0.4 + 1);
 #define GO_BACK_ANIMATED do { \
     LayerColor *cover = LayerColor::create(Color4B::WHITE); \
     this->getScene()->addChild(cover, INT_MAX); \
