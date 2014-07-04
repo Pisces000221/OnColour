@@ -6,7 +6,9 @@
 #include "SineVelPhoton.h"
 #include "Bomb.h"
 #include "Global.h"
+#include "SimpleAudioEngine.h"
 using namespace cocos2d;
+using namespace CocosDenshion;
 
 const Color3B Gameplay::_warnColours[] = {
     Color3B(255, 0, 0), Color3B(0, 255, 0), Color3B(0, 0, 255)
@@ -65,6 +67,10 @@ bool Gameplay::init()
 {
     if (!Layer::init()) return false;
     this->setContentSize(onclr::mapsize);
+
+    // Preload sound effects
+    SimpleAudioEngine::getInstance()->setEffectsVolume(UserDefault::getInstance()->getFloatForKey("FX_Vol"));
+    SimpleAudioEngine::getInstance()->preloadEffect("sounds/192524__spoonsandlessspoons__pop-sound.wav");
 
     // Reset score, time, etc.
     _score = 0.0f;
@@ -408,6 +414,7 @@ void Gameplay::checkHugs(float dt)
                     _player->runAction(EaseElasticOut::create(
                         ScaleTo::create(0.5, 1)));
                     _player->reset(0.2);
+                    SimpleAudioEngine::getInstance()->playEffect("sounds/192524__spoonsandlessspoons__pop-sound.wav");
                     // If we eat something, we get energy, huh?
                     int cval = photon->getColourValue();
                     _r += (float)(c.r * cval) / 255.0;
