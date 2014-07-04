@@ -70,7 +70,7 @@ bool Gameplay::init()
 
     // Preload sound effects
     SimpleAudioEngine::getInstance()->setEffectsVolume(UserDefault::getInstance()->getFloatForKey("FX_Vol"));
-    SimpleAudioEngine::getInstance()->preloadEffect("sounds/192524__spoonsandlessspoons__pop-sound.wav");
+    SimpleAudioEngine::getInstance()->preloadEffect("sounds/pop.wav");
 
     // Reset score, time, etc.
     _score = 0.0f;
@@ -414,7 +414,7 @@ void Gameplay::checkHugs(float dt)
                     _player->runAction(EaseElasticOut::create(
                         ScaleTo::create(0.5, 1)));
                     _player->reset(0.2);
-                    SimpleAudioEngine::getInstance()->playEffect("sounds/192524__spoonsandlessspoons__pop-sound.wav");
+                    SimpleAudioEngine::getInstance()->playEffect("sounds/pop.wav");
                     // If we eat something, we get energy, huh?
                     int cval = photon->getColourValue();
                     _r += (float)(c.r * cval) / 255.0;
