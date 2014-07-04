@@ -50,6 +50,8 @@ protected:
     float _difficulty_rate;
     float _timeToLastPhotonGen;
     float _sensitivity;
+    bool _comPosEnabled, _comPosInitialized;
+    float _comPosX, _comPosY;
     cocos2d::EventKeyboard::KeyCode pressedKeys[2];
     cocos2d::EventListenerTouchOneByOne *_touchListener;
 

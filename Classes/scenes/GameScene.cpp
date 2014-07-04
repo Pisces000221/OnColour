@@ -74,8 +74,10 @@ bool Gameplay::init()
     _isInFeverMode = _gamePaused = false;
     _difficulty_rate = 1;
 
-    // Load sensitivity preference
+    // Load sensitivity & comfortable position preferences
     _sensitivity = UserDefault::getInstance()->getFloatForKey("Senvitivity", 1);
+    _comPosEnabled = UserDefault::getInstance()->getBoolForKey("Comfortable_Pos_Mode", false);
+    _comPosInitialized = false;
 
     // The player
     _playerRadius = onclr::player_radius * onclr::bubble_scale;
@@ -132,7 +134,12 @@ bool Gameplay::init()
     // Copied from cpp-tests (cocos2d-x-3.2alpha0)
     auto listener = EventListenerAcceleration::create([this](Acceleration* acc, Event* event) {
         if (_gamePaused) return;
-        this->moveBall(acc->x, acc->y, 0 /*acc->timestamp * 1e-9*/);
+        if (_comPosEnabled) {
+            if (_comPosInitialized) this->moveBall(acc->x - _comPosX, acc->y - _comPosY, 0);
+            else { _comPosX = acc->x; _comPosY = acc->y; _comPosInitialized = true; }
+        } else {
+            this->moveBall(acc->x, acc->y, 0);
+        }
     });
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, _player);
 
