@@ -46,11 +46,9 @@ bool Tutorial::init()
     listener->setSwallowTouches(true);
     listener->onTouchBegan = [this](Touch *touch, Event *event) {
         Vec2 p = touch->getLocation();
-        if (p.x > _contentSize.width * 1.0/3.0 &&
-         p.x < _contentSize.width * 2.0/3.0) {
-            _touchMoveDeltaY = p.y - _textContainer->getPositionY();
-            _isMovingContainer = true;
-        }
+        _touchMoveDeltaY = p.y - _textContainer->getPositionY();
+        _isMovingContainer = p.x > _contentSize.width * 1.0/3.0 &&
+            p.x < _contentSize.width * 2.0/3.0;
         return true;
     };
     listener->onTouchMoved = [this](Touch *touch, Event *event) {
