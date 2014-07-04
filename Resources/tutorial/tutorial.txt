@@ -14,4 +14,8 @@ The photon with a curved line on it changes its speed all the time, while a norm
 The black photon with a warning sign is a bomb. If your ball touches it, even one pixel inside it will lead to certain death. So just stay away from it!
 #
 If you get your red, green and blue colour all above 0.5 (see image), you enter fever mode! Then you'll get your score doubled in reward until you leave fever mode.
+#
+About Comfortable Position Mode:
+If enabled, you can choose any position while playing. Just sit however you like and press the 'New Game' menu.
+If disabled, you have to hold the device top-down. However, disablng it makes the game control easier to get used to.
 ##

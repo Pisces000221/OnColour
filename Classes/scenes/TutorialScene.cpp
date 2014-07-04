@@ -87,10 +87,18 @@ bool Tutorial::init()
 
 void Tutorial::refreshDisp()
 {
-    _image->setTexture(String::createWithFormat("tutorial/tutorial_%d.png", _curPage + 1)->getCString());
-    _image->setScaleX(_contentSize.width / _image->getContentSize().width);
-    _image->setScaleY(_contentSize.height / _image->getContentSize().height);
+    _image->runAction(Sequence::create(
+        FadeOut::create(0.3f),
+        CallFunc::create([this] {
+            _image->setTexture(String::createWithFormat("tutorial/tutorial_%d.png", _curPage + 1)->getCString());
+            _image->setScaleX(_contentSize.width / _image->getContentSize().width);
+            _image->setScaleY(_contentSize.height / _image->getContentSize().height);
+        }),
+        FadeIn::create(0.3f), nullptr
+    ));
     _textLabel->setString(_texts[_curPage]);
+    _textContainer->setContentSize(Size(
+        _contentSize.width, _textLabel->getContentSize().height));
 }
 
 void Tutorial::goBack(Ref *sender)
