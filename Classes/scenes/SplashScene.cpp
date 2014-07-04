@@ -26,6 +26,11 @@ bool Splash::init()
     label_2->setColor(Color3B(0, 0, 0));
     this->addChild(label_2);
 
+    // Fade in on startup
+    auto cover = LayerColor::create(Color4B::BLACK);
+    this->addChild(cover, 1024);
+    cover->runAction(FadeOut::create(0.15f));
+
     this->scheduleOnce(schedule_selector(Splash::goOn), 2);
 
     return true;
