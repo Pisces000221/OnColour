@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "ToggleBubble.h"
 #include "MenuItemLabelTint.h"
+#include "MScrollView.h"
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
 using namespace cocos2d;
@@ -18,6 +19,10 @@ bool PreferenceLayer::init()
 {
     if (!LayerColor::initWithColor(Color4B(255, 255, 255, 255))) return false;
     float s_ratio = (onclr::ratio - 1) * 0.7 + 1;
+
+    // Create the scroll view
+    auto scroll = M::ScrollView::create();
+    this->addChild(scroll);
 
     // Read previous set values
     auto ud = UserDefault::getInstance();
@@ -54,7 +59,7 @@ bool PreferenceLayer::init()
     label_1->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_1->setPosition(Vec2(6, onclr::vsize.height - 88 * s_ratio));
     label_1->setColor(Color3B::BLACK);
-    this->addChild(label_1);
+    scroll->addChild(label_1);
     auto slider_1 = ui::Slider::create();
     slider_1->setColor(Color3B(0xfc, 0x25, 0xef));
     INIT_SLIDER_TEXTURES(slider_1);
@@ -69,7 +74,7 @@ bool PreferenceLayer::init()
             ((ui::Slider *)sender)->getPercent(),
             0.0, 100.0, MIN_SENSITIVITY, MAX_SENSITIVITY);
     });
-    this->addChild(slider_1);
+    scroll->addChild(slider_1);
     label_1->setOpacity(0);
     slider_1->setOpacity(0);
     label_1->runAction(FADE_IN_DELAY(1.1, 0.3));
@@ -80,7 +85,7 @@ bool PreferenceLayer::init()
     label_2->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_2->setPosition(Vec2(6, onclr::vsize.height - 128 * s_ratio));
     label_2->setColor(Color3B::BLACK);
-    this->addChild(label_2);
+    scroll->addChild(label_2);
     auto slider_2 = ui::Slider::create();
     slider_2->setColor(Color3B(0x25, 0xfc, 0x80));
     INIT_SLIDER_TEXTURES(slider_2);
@@ -92,7 +97,7 @@ bool PreferenceLayer::init()
     slider_2->addEventListener([this](Ref *sender, ui::Slider::EventType type) {
         _sliderValues[1] = ((ui::Slider *)sender)->getPercent() / 100.0;
     });
-    this->addChild(slider_2);
+    scroll->addChild(slider_2);
     label_2->setOpacity(0);
     slider_2->setOpacity(0);
     label_2->runAction(FADE_IN_DELAY(1.25, 0.3));
@@ -103,7 +108,7 @@ bool PreferenceLayer::init()
     label_3->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_3->setPosition(Vec2(6, onclr::vsize.height - 168 * s_ratio));
     label_3->setColor(Color3B::BLACK);
-    this->addChild(label_3);
+    scroll->addChild(label_3);
     auto slider_3 = ui::Slider::create();
     slider_3->setColor(Color3B(0x25, 0x80, 0xfc));
     INIT_SLIDER_TEXTURES(slider_3);
@@ -115,7 +120,7 @@ bool PreferenceLayer::init()
     slider_3->addEventListener([this](Ref *sender, ui::Slider::EventType type) {
         _sliderValues[2] = ((ui::Slider *)sender)->getPercent() / 100.0;
     });
-    this->addChild(slider_3);
+    scroll->addChild(slider_3);
     label_3->setOpacity(0);
     slider_3->setOpacity(0);
     label_3->runAction(FADE_IN_DELAY(1.4, 0.3));
@@ -129,13 +134,13 @@ bool PreferenceLayer::init()
             slider_3->setPercent(100); _sliderValues[2] = 1;
         });
     resetMenu->setPosition(Vec2(onclr::vsize.width * 0.5,
-        onclr::vsize.height - 228 * s_ratio));
+        onclr::vsize.height - 218 * s_ratio));
     resetMenu->setOpacity(0);
     resetMenu->runAction(FADE_IN_DELAY(1.6, 0.3));
     // Reuse 'menu', protect the enviRAMent
     menu = Menu::create(resetMenu, nullptr);
     menu->setPosition(Vec2::ZERO);
-    this->addChild(menu);
+    scroll->addChild(menu);
 
     float bubble_w = 0.85 * s_ratio * 20;
     // Toggle between top-down mode and comfortable-position mode
@@ -148,7 +153,7 @@ bool PreferenceLayer::init()
 #endif
     label_4->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_4->setPosition(Vec2(6, onclr::vsize.height - 268 * s_ratio));
-    this->addChild(label_4);
+    scroll->addChild(label_4);
     label_4->setOpacity(0);
     label_4->runAction(FADE_IN_DELAY(1.8, 0.3));
     auto toggle_4 = ToggleBubble::create(bubble_w, Color3B(255, 128, 32),
@@ -166,14 +171,14 @@ bool PreferenceLayer::init()
     toggle_4->setOn(_toggleValues[0]);
     toggle_4->setOpacity(0);
     toggle_4->runAction(FADE_IN_DELAY(1.8, 0.3));
-    this->addChild(toggle_4);
+    scroll->addChild(toggle_4);
 
     // Toggle debug information visibility
     auto label_5 = onclr::label("Debug information", 28 * s_ratio);
     label_5->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_5->setPosition(Vec2(6, onclr::vsize.height - 308 * s_ratio));
     label_5->setColor(Color3B::BLACK);
-    this->addChild(label_5);
+    scroll->addChild(label_5);
     label_5->setOpacity(0);
     label_5->runAction(FADE_IN_DELAY(1.95, 0.3));
     auto toggle_5 = ToggleBubble::create(bubble_w, Color3B(255, 255, 0),
@@ -186,7 +191,42 @@ bool PreferenceLayer::init()
     toggle_5->setOn(_toggleValues[1]);
     toggle_5->setOpacity(0);
     toggle_5->runAction(FADE_IN_DELAY(1.95, 0.3));
-    this->addChild(toggle_5);
+    scroll->addChild(toggle_5);
+
+    // Select language
+    auto label_6 = onclr::label("Language: ", 28 * s_ratio);
+    label_6->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    label_6->setPosition(Vec2(6, onclr::vsize.height - 368 * s_ratio));
+    label_6->setColor(Color3B::BLACK);
+    scroll->addChild(label_6);
+    label_6->setOpacity(0);
+    label_6->runAction(FADE_IN_DELAY(2.1, 0.3));
+    // Labguage names are in bold font
+    auto toggle_6_0 = MenuItemLabelTint::create(
+        onclr::label("English", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {});
+    auto toggle_6_1 = MenuItemLabelTint::create(
+        onclr::label("Simp. Chinese", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {});
+    auto toggle_6 = MenuItemToggle::createWithCallback([](Ref *sender) {
+        CCLOG("a");
+    }, toggle_6_0, toggle_6_1, nullptr);
+    toggle_6->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    toggle_6->setPosition(Vec2(
+        12 + label_6->getContentSize().width,
+        onclr::vsize.height - 368 * s_ratio));
+    menu = Menu::create(toggle_6, nullptr);
+    menu->setPosition(Vec2::ZERO);
+    scroll->addChild(menu);
+
+    // Update the size of the scroll view
+    float miny = 0;
+    for (auto &c : scroll->getChildren()) {
+        CCLOG("%f, %f", c->getPositionY(), c->getAnchorPointInPoints().y);
+        float y = c->getPositionY() - c->getAnchorPointInPoints().y;
+        if (y < miny) miny = y;
+    }
+    scroll->setContentSize(Size(_contentSize.width, _contentSize.height - miny));
+    for (auto &c : scroll->getChildren())
+        c->setPositionY(c->getPositionY() - miny);
 
     return true;
 }

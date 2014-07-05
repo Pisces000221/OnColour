@@ -51,7 +51,7 @@ bool Startup::init()
     preferencesMenu->setNormalizedPosition(Vec2(0.5, 0.5));
     preferencesMenu->setOpacity(0);
     auto tutorialMenu = MenuItemLabelTint::create(
-        onclr::label("How to play?", 36 * s_ratio, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showTutorial, this));
+        onclr::label("How to play", 36 * s_ratio, false, Color3B::BLACK), CC_CALLBACK_1(Startup::showTutorial, this));
     tutorialMenu->setNormalizedPosition(Vec2(0.5, 0.382));
     tutorialMenu->setOpacity(0);
     auto menu = Menu::create(newGameMenu, preferencesMenu, tutorialMenu, nullptr);
