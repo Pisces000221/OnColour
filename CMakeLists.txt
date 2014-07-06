@@ -64,8 +64,6 @@ set(GAME_SRC
   Classes/scenes/GameScene.cpp
   Classes/scenes/PreferenceScene.cpp
   Classes/scenes/TutorialScene.cpp
-  Classes/kineticroll/kc_linearscroll.c
-  Classes/widgets/MScrollView.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
   Classes/widgets/ToggleBubble.cpp
@@ -86,8 +84,6 @@ set(GAME_SRC
   Classes/scenes/GameScene.cpp
   Classes/scenes/PreferenceScene.cpp
   Classes/scenes/TutorialScene.cpp
-  Classes/kineticroll/kc_linearscroll.c
-  Classes/widgets/MScrollView.cpp
   Classes/widgets/MenuItemLabelTint.cpp
   Classes/widgets/Bubble.cpp
   Classes/widgets/ToggleBubble.cpp
