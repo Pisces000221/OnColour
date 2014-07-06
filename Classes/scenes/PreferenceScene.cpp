@@ -46,6 +46,9 @@ bool PreferenceLayer::init()
     _sliderValues[2] = ud->getFloatForKey("FX_Vol", 1);
     _toggleValues[0] = ud->getBoolForKey("Comfortable_Pos_Mode", false);
     _toggleValues[1] = ud->getBoolForKey("Debug_Info_Vis", true);
+    // cpp-tests/CurrentLanguageTest/CurrentLanguageTest.cpp (12)
+    _lang = ud->getIntegerForKey("Language",
+        (int)(Application::getInstance()->getCurrentLanguage()));
     CCLOG("sensitivity, soundvol, fxvol = %f, %f, %f",
         _sliderValues[0], _sliderValues[1], _sliderValues[2]);
 
@@ -209,7 +212,7 @@ bool PreferenceLayer::init()
     scroll->addChild(toggle_5);
 
     // Select language
-    auto label_6 = onclr::label("Language: ", 28 * s_ratio);
+    auto label_6 = onclr::label("Language (takes effect after restart): ", 28 * s_ratio);
     label_6->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_6->setPosition(Vec2(6, onclr::vsize.height - 368 * s_ratio));
     label_6->setColor(Color3B::BLACK);
@@ -228,6 +231,7 @@ bool PreferenceLayer::init()
     toggle_6->setPosition(Vec2(
         12 + label_6->getContentSize().width,
         onclr::vsize.height - 368 * s_ratio));
+    toggle_6->setSelectedIndex(_lang);
     menu = Menu::create(toggle_6, nullptr);
     menu->setPosition(Vec2::ZERO);
     scroll->addChild(menu);
@@ -252,6 +256,7 @@ void PreferenceLayer::goBack(Ref *sender)
     ud->setFloatForKey("FX_Vol", _sliderValues[2]);
     ud->setBoolForKey("Comfortable_Pos_Mode", _toggleValues[0]);
     ud->setBoolForKey("Debug_Info_Vis", _toggleValues[1]);
+    ud->setIntegerForKey("Language", _lang);
     ud->flush();
     GO_BACK_ANIMATED;
 }

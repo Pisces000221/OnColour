@@ -16,6 +16,7 @@ public:
 protected:
     float _sliderValues[3];
     bool _toggleValues[2];
+    int _lang;
 
     float _startPosY;   // used by the scroll view
 };

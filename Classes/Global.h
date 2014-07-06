@@ -79,6 +79,8 @@ namespace onclr {
 extern cocos2d::Size vsize;
 extern float ratio;
 extern float bubble_scale;
+extern cocos2d::LanguageType language;
+extern std::map<std::string, std::string> locale;
 void init();
 extern const cocos2d::Size mapsize;
 extern const float photongen_mintime;
@@ -109,6 +111,8 @@ extern const float bomb_possib;
 cocos2d::Label *label(std::string str, int fontsize, bool isbold = false,
     cocos2d::Color3B colour = cocos2d::Color3B::WHITE,
     cocos2d::TextHAlignment alignment = cocos2d::TextHAlignment::LEFT, int linewidth = 0);
+
+std::string readableAssetFile(std::string filename);
 
 }
 

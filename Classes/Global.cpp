@@ -34,24 +34,60 @@ const float bomb_possib = 0.05f;
 cocos2d::Size vsize;
 float ratio;
 float bubble_scale;
+cocos2d::LanguageType language;
+std::map<std::string, std::string> locale;
 void init()
 {
+    language = (cocos2d::LanguageType)
+        (UserDefault::getInstance()->getIntegerForKey("Language",
+        (int)(Application::getInstance()->getCurrentLanguage())));
+    std::string langNames[] = { "en-UK", "zh-CN" };
+    // Read localization info
+    FILE *fp = fopen(onclr::readableAssetFile("locale/" + langNames[(int)language] + ".locale").c_str(), "r");
+    std::string k, v;
+    while (!feof(fp)) {
+        char _k[1024], _v[1024];
+        fgets(_k, 1024, fp);
+        fgets(_v, 1024, fp);
+        //http://blog.csdn.net/butterfly_dreaming/article/details/10142443
+        k = _k; k.erase(k.find_last_not_of("\n") + 1);
+        v = _v; v.erase(v.find_last_not_of("\n") + 1);
+        locale[k] = v;
+        CCLOG("%s => %s", k.c_str(), v.c_str());
+    }
+    fclose(fp);
+    locale["___PLACEHOLDER___"] = "___UNUSED___";
     vsize = Director::getInstance()->getVisibleSize();
     ratio = vsize.width / 480.0;
     bubble_scale = (ratio - 1) * 0.4 + 1;
 }
 
-#define GLOBAL_REGULAR_FONT "fonts/FiraSans_400.otf"
-#define GLOBAL_BOLD_FONT    "fonts/FiraSans_700.otf"
+#define GLOBAL_REGULAR_FONT locale["__FONTNAME_R__"].c_str()
+#define GLOBAL_BOLD_FONT    locale["__FONTNAME_B__"].c_str()
 
 Label *label(std::string str, int fontsize, bool isbold,
     Color3B colour, TextHAlignment alignment, int linewidth)
 {
+    auto find_result = locale.find(str);
+    if (find_result != locale.end()) str = find_result->second;
     Label *r = Label::createWithTTF(
         TTFConfig(isbold ? GLOBAL_BOLD_FONT : GLOBAL_REGULAR_FONT, fontsize),
         str, alignment, linewidth);
     r->setColor(colour);
     return r;
+}
+
+std::string readableAssetFile(std::string filename)
+{
+    std::string path = FileUtils::getInstance()->getWritablePath();
+    if (path[path.length() - 1] != '/') path += '/';
+    std::string textFileName =
+        FileUtils::getInstance()->getWritablePath() + "mydata.dat";
+    Data data = FileUtils::getInstance()->getDataFromFile(filename);
+    FILE *fp = fopen(textFileName.c_str(), "w");
+    fwrite(data.getBytes(), 1, data.getSize(), fp);
+    fclose(fp);
+    return textFileName;
 }
 
 }

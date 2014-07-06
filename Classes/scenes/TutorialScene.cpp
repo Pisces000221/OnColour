@@ -22,14 +22,7 @@ bool Tutorial::init()
     // Reset page info
     _curPage = 0;
     // Read page info
-    std::string textFileName =
-        FileUtils::getInstance()->getWritablePath() + "tutorial.txt";
-    CCLOG("file name: %s", textFileName.c_str());
-    Data data = FileUtils::getInstance()->getDataFromFile("tutorial/tutorial.txt");
-    FILE *fp = fopen(textFileName.c_str(), "w");
-    fwrite(data.getBytes(), 1, data.getSize(), fp);
-    fclose(fp);
-    fp = fopen(textFileName.c_str(), "r");
+    FILE *fp = fopen(onclr::readableAssetFile(onclr::locale["__TUTORIAL_FILE__"]).c_str(), "r");
     std::string s = "";
     while (!feof(fp)) {
         char line[1024];

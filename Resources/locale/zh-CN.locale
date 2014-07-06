@@ -1,10 +1,16 @@
+__FONTNAME_R__
+fonts/wqy-microhei-lite.ttc
+__FONTNAME_B__
+fonts/wqy-microhei.ttc
+__TUTORIAL_FILE__
+tutorial/tutorial_zh-CN.txt
 On Colour
 On Colour
 New game
 新游戏
 Preferences
 设置
-How to play?
+How to play
 玩法
 * Off colour: red *
 * 掉色：红色 *
@@ -28,3 +34,5 @@ Comfortable position
 以舒适姿势开始
 Debug information
 调试信息
+Language (takes effect after restart): 
+语言（重启后生效）

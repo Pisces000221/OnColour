@@ -1,0 +1,22 @@
+Welcome to On Colour.
+This is an accelerometer-based game. You need to tilt your device left and right to control the ball to get colours as he loses them.
+<Press on the left or right to navigate; Press & drag this text to move it>
+#
+You're the circle with a black border.
+In this example, if you want to get some green colour, put the ball INSIDE the big green circle (called a 'photon') and wait for a while. You get its colour when your border disappears entirely.
+#
+The colours are added up like lights. For example, green plus red gets yellow, and green plus a little red gets orange.
+(TODO: modify the picture to fit the text)
+#
+The quantity of colour you get doesn't depend on the size of the photon or what's drawn on it. Instead, it depends on its opacity. The higher its opacity is, the more colour it contains.
+#
+The photon with a curved line on it changes its speed all the time, while a normal photon doesn't.
+#
+The black photon with a warning sign is a bomb. If your ball touches it, even one pixel inside it will lead to certain death. So just stay away from it!
+#
+If you get your red, green and blue colour all above 0.5 (see image), you enter fever mode! Then you'll get your score doubled in reward until you leave fever mode.
+#
+About Comfortable Position Mode:
+If enabled, you can choose any position while playing. Just sit however you like and press the 'New Game' menu.
+If disabled, you have to hold the device top-down. However, disablng it makes the game control easier to get used to.
+##
