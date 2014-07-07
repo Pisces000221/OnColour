@@ -14,7 +14,7 @@
    id="svg5372"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="新建文档 12">
+   sodipodi:docname="tutorial_7.svg">
   <defs
      id="defs5374" />
   <sodipodi:namedview
@@ -25,10 +25,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.2645833"
-     inkscape:cx="360"
-     inkscape:cy="240"
+     inkscape:cx="360.00001"
+     inkscape:cy="240.00001"
      inkscape:document-units="px"
-     inkscape:current-layer="g5908"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1301"
      inkscape:window-height="744"
@@ -43,7 +43,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -53,16 +53,17 @@
      id="layer1"
      transform="translate(0,-572.36218)">
     <g
-       id="g5908">
+       id="g5908"
+       transform="translate(0,58.5173)">
       <path
          transform="translate(0,572.36218)"
-         d="m 105.17299,71.960464 a 37.166393,37.166393 0 1 1 -74.332791,0 37.166393,37.166393 0 1 1 74.332791,0 z"
+         d="m 105.17299,71.960464 c 0,20.526433 -16.639966,37.166396 -37.166398,37.166396 -20.526432,0 -37.166393,-16.639963 -37.166393,-37.166396 0,-20.526432 16.639961,-37.166393 37.166393,-37.166393 20.526432,0 37.166398,16.639961 37.166398,37.166393 z"
          sodipodi:ry="37.166393"
          sodipodi:rx="37.166393"
          sodipodi:cy="71.960464"
          sodipodi:cx="68.006592"
          id="path5380"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;stroke-opacity:1"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          sodipodi:type="arc" />
       <text
          sodipodi:linespacing="125%"
@@ -127,7 +128,7 @@
            style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT Bold"
            id="tspan5972">  Score x2</tspan></text>
       <path
-         style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+         style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          d="m 352.97561,269.26829 79.02439,0"
          id="path5974"
          inkscape:connector-curvature="0"
@@ -141,7 +142,7 @@
     </g>
     <g
        id="g5915"
-       transform="translate(235.86483,0)">
+       transform="translate(235.86483,58.5173)">
       <path
          sodipodi:type="arc"
          style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -176,7 +177,7 @@
            style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT">B: 1</tspan></text>
     </g>
     <g
-       transform="translate(458.88922,0)"
+       transform="translate(458.88922,58.5173)"
        id="g5927">
       <path
          transform="translate(0,572.36218)"
@@ -186,7 +187,7 @@
          sodipodi:cy="71.960464"
          sodipodi:cx="68.006592"
          id="path5929"
-         style="color:#000000;fill:#0033ff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:#00ccff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          sodipodi:type="arc" />
       <text
          sodipodi:linespacing="125%"
@@ -204,7 +205,7 @@
            id="tspan5935"
            y="649.80865"
            x="125.73311"
-           sodipodi:role="line">G: 0.2</tspan><tspan
+           sodipodi:role="line">G: 0.8</tspan><tspan
            style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#0000ff;font-family:Fira Sans OT;-inkscape-font-specification:Fira Sans OT"
            id="tspan5937"
            y="679.80865"
@@ -218,7 +219,7 @@
          sodipodi:cy="264.87805"
          sodipodi:rx="65.853661"
          sodipodi:ry="65.853661"
-         d="m 178.2439,264.87805 a 65.853661,65.853661 0 1 1 -131.707317,0 65.853661,65.853661 0 1 1 131.707317,0 z"
+         d="m 178.2439,264.87805 c 0,36.36997 -29.48368,65.85366 -65.85366,65.85366 -36.369969,0 -65.853657,-29.48369 -65.853657,-65.85366 0,-36.36997 29.483688,-65.85366 65.853657,-65.85366 36.36998,0 65.85366,29.48369 65.85366,65.85366 z"
          transform="translate(-458.88922,572.36218)" />
     </g>
   </g>

@@ -5,8 +5,7 @@ This is an accelerometer-based game. You need to tilt your device left and right
 You're the circle with a black border.
 In this example, if you want to get some green colour, put the ball INSIDE the big green circle (called a 'photon') and wait for a while. You get its colour when your border disappears entirely.
 #
-The colours are added up like lights. For example, green plus red gets yellow, and green plus a little red gets orange.
-(TODO: modify the picture to fit the text)
+The colours are added up like lights. For example, red plus green gets yellow, and green plus blue gets azure.
 #
 The quantity of colour you get doesn't depend on the size of the photon or what's drawn on it. Instead, it depends on its opacity. The higher its opacity is, the more colour it contains.
 #

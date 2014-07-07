@@ -42,6 +42,9 @@ void init()
         (UserDefault::getInstance()->getIntegerForKey("Language",
         (int)(Application::getInstance()->getCurrentLanguage())));
     std::string langNames[] = { "en-UK", "zh-CN" };
+    int langCount = 2;
+    // Unsupported language?
+    if ((int)language >= langCount) language = LanguageType::ENGLISH;
     // Read localization info
     FILE *fp = fopen(onclr::readableAssetFile("locale/" + langNames[(int)language] + ".locale").c_str(), "r");
     std::string k, v;
@@ -53,10 +56,8 @@ void init()
         k = _k; k.erase(k.find_last_not_of("\n") + 1);
         v = _v; v.erase(v.find_last_not_of("\n") + 1);
         locale[k] = v;
-        CCLOG("%s => %s", k.c_str(), v.c_str());
     }
     fclose(fp);
-    locale["___PLACEHOLDER___"] = "___UNUSED___";
     vsize = Director::getInstance()->getVisibleSize();
     ratio = vsize.width / 480.0;
     bubble_scale = (ratio - 1) * 0.4 + 1;
