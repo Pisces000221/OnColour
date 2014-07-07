@@ -65,6 +65,13 @@ bool About::init()
     FADE_IN_ELEM(dev_lbl, 1.3);
     scroll->addChild(dev_lbl);
 
+    auto popfx_lbl = onclr::label("Sound FX by\nJacob McCrary on FreeSound.org",
+        30 * s_ratio, true, Color3B::BLACK, TextHAlignment::RIGHT);
+    popfx_lbl->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+    popfx_lbl->setPosition(BOTOOM_RIGHT_CORNER(dev_lbl) - Vec2(12, 12));
+    FADE_IN_ELEM(popfx_lbl, 1.5);
+    scroll->addChild(popfx_lbl);
+
     return true;
 }
 
