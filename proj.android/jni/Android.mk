@@ -19,6 +19,7 @@ LOCAL_SRC_FILES := oncolour/main.cpp \
                    ../../Classes/scenes/GameScene.cpp \
                    ../../Classes/scenes/PreferenceScene.cpp \
                    ../../Classes/scenes/TutorialScene.cpp \
+                   ../../Classes/scenes/AboutScene.cpp \
                    ../../Classes/widgets/MenuItemLabelTint.cpp \
                    ../../Classes/widgets/Bubble.cpp \
                    ../../Classes/widgets/ToggleBubble.cpp \
