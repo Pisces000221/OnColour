@@ -212,7 +212,7 @@ bool PreferenceLayer::init()
     scroll->addChild(toggle_5);
 
     // Select language
-    auto label_6 = onclr::label("Language (takes effect after restart): ", 28 * s_ratio);
+    auto label_6 = onclr::label("Language (after restart): ", 28 * s_ratio);
     label_6->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     label_6->setPosition(Vec2(6, onclr::vsize.height - 368 * s_ratio));
     label_6->setColor(Color3B::BLACK);
@@ -220,19 +220,20 @@ bool PreferenceLayer::init()
     label_6->setOpacity(0);
     label_6->runAction(FADE_IN_DELAY(2.1, 0.3));
     // Labguage names are in bold font
-    auto toggle_6_0 = MenuItemLabelTint::create(
-        onclr::label("English", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {});
-    auto toggle_6_1 = MenuItemLabelTint::create(
-        onclr::label("简体中文", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {});
+    Vector<MenuItem *> toggles_6;
+    toggles_6.pushBack(MenuItemLabelTint::create(
+        onclr::label("English", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {}));
+    toggles_6.pushBack(MenuItemLabelTint::create(
+        onclr::label("Simp. Chinese", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {}));
     auto toggle_6 = MenuItemToggle::createWithCallback([this](Ref *sender) {
         _lang = static_cast<MenuItemToggle *>(sender)->getSelectedIndex();
-    }, toggle_6_0, toggle_6_1, nullptr);
+    }, toggles_6);
     toggle_6->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     toggle_6->setPosition(Vec2(
         12 + label_6->getContentSize().width,
         onclr::vsize.height - 368 * s_ratio));
-    toggle_6->setOpacity(0);
-    toggle_6->runAction(FADE_IN_DELAY(2.15, 0.3));
+    toggles_6.at(_lang)->setOpacity(0);
+    toggles_6.at(_lang)->runAction(FADE_IN_DELAY(2.15, 0.3));
     toggle_6->setSelectedIndex(_lang);
     menu = Menu::create(toggle_6, nullptr);
     menu->setPosition(Vec2::ZERO);

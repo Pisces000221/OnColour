@@ -12,6 +12,8 @@ Preferences
 设置
 How to play
 玩法
+Paused
+暂停
 * Off colour: red *
 * 掉色：红色 *
 * Off colour: blue *
@@ -29,10 +31,10 @@ FX volume
 Reset to default
 恢复默认
 Comfortable position (not on laptops)
-以舒适姿势开始（电脑上无效）
+舒适姿势模式（电脑上无效）
 Comfortable position
-以舒适姿势开始
+舒适姿势模式
 Debug information
 调试信息
-Language (takes effect after restart): 
+Language (after restart): 
 语言（重启后生效）
