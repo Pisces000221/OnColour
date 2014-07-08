@@ -11,6 +11,7 @@ public:
     CREATE_FUNC(PreferenceLayer);
     SCENE_FUNC(PreferenceLayer);
 
+    void save();
     void goBack(cocos2d::Ref *sender);
 
 protected:

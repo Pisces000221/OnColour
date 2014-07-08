@@ -7,6 +7,8 @@
 #include "ui/CocosGUI.h"
 using namespace cocos2d;
 
+#define SCHEDULE_SAVE_KEY "PREFERENCE_SCHEDULE_SAVE"
+
 #define MIN_SENSITIVITY 0.5
 #define MAX_SENSITIVITY 1.5
 
@@ -77,6 +79,7 @@ bool PreferenceLayer::init()
         _sliderValues[0] = RAND_RATE(
             ((ui::Slider *)sender)->getPercent(),
             0.0, 100.0, MIN_SENSITIVITY, MAX_SENSITIVITY);
+        this->save();
     });
     scroll->addChild(slider_1);
     label_1->setOpacity(0);
@@ -100,6 +103,7 @@ bool PreferenceLayer::init()
     slider_2->setPercent(_sliderValues[1] * 100.0);
     slider_2->addEventListener([this](Ref *sender, ui::Slider::EventType type) {
         _sliderValues[1] = ((ui::Slider *)sender)->getPercent() / 100.0;
+        this->save();
     });
     scroll->addChild(slider_2);
     label_2->setOpacity(0);
@@ -136,6 +140,7 @@ bool PreferenceLayer::init()
             slider_1->setPercent(50); _sliderValues[0] = 1;
             slider_2->setPercent(100); _sliderValues[1] = 1;
             slider_3->setPercent(100); _sliderValues[2] = 1;
+            this->save();
         });
     resetMenu->setPosition(Vec2(onclr::vsize.width * 0.5,
         onclr::vsize.height - 218 * s_ratio));
@@ -168,6 +173,7 @@ bool PreferenceLayer::init()
             static_cast<ToggleBubble *>(sender)->setOn(false);
 #else
             _toggleValues[0] = static_cast<ToggleBubble *>(sender)->isOn();
+            this->save();
 #endif
         });
     toggle_4->setPosition(Vec2(label_4->getContentSize().width + bubble_w + 12,
@@ -189,6 +195,7 @@ bool PreferenceLayer::init()
         [this](Ref *sender) {
             _toggleValues[1] = static_cast<ToggleBubble *>(sender)->isOn();
             Director::getInstance()->setDisplayStats(_toggleValues[1]);
+            this->save();
         });
     toggle_5->setPosition(Vec2(label_5->getContentSize().width + bubble_w + 12,
         onclr::vsize.height - 308 * s_ratio));
@@ -213,6 +220,7 @@ bool PreferenceLayer::init()
         onclr::label("Simp. Chinese", 28 * s_ratio, true, Color3B::BLACK), [](Ref *sender) {}));
     auto toggle_6 = MenuItemToggle::createWithCallback([this](Ref *sender) {
         _lang = static_cast<MenuItemToggle *>(sender)->getSelectedIndex();
+         this->save();
     }, toggles_6);
     toggle_6->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
     toggle_6->setPosition(Vec2(
@@ -229,10 +237,15 @@ bool PreferenceLayer::init()
     float miny = toggle_6->getPositionY() - toggle_6->getAnchorPointInPoints().y;
     TURN_INTO_SCROLL_VIEW(_dragStartPos, scroll, _contentSize.height - miny, _contentSize.height);
 
+    // Schedule save
+    this->getScheduler()->schedule([](float dt) {
+        UserDefault::getInstance()->flush();
+    }, this, 1, false, SCHEDULE_SAVE_KEY);
+
     return true;
 }
 
-void PreferenceLayer::goBack(Ref *sender)
+void PreferenceLayer::save()
 {
     auto ud = UserDefault::getInstance();
     ud->setFloatForKey("Senvitivity", _sliderValues[0]);
@@ -241,6 +254,12 @@ void PreferenceLayer::goBack(Ref *sender)
     ud->setBoolForKey("Comfortable_Pos_Mode", _toggleValues[0]);
     ud->setBoolForKey("Debug_Info_Vis", _toggleValues[1]);
     ud->setIntegerForKey("Language", _lang);
-    ud->flush();
+}
+
+void PreferenceLayer::goBack(Ref *sender)
+{
+    this->save();
+    UserDefault::getInstance()->flush();
+    this->getScheduler()->unschedule(SCHEDULE_SAVE_KEY, this);
     GO_BACK_ANIMATED;
 }
