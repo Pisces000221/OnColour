@@ -9,7 +9,7 @@ bool ToggleBubble::init(float radius, Color3B colour, const ccMenuCallback &call
     _initialColour = colour;
     _call = callback;
     auto listener = EventListenerTouchOneByOne::create();
-    listener->setSwallowTouches(true);
+    listener->setSwallowTouches(false);
     listener->onTouchBegan = [this](Touch *touch, Event *event) {
         Vec2 p = convertTouchToNodeSpace(touch);
         bool thisTouchIsInside =

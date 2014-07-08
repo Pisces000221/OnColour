@@ -18,7 +18,7 @@ protected:
     bool _toggleValues[2];
     int _lang;
 
-    float _startPosY;   // used by the scroll view
+    float _dragStartPos;    // used by the scroll view
 };
 
 #endif

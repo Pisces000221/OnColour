@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "ToggleBubble.h"
 #include "MenuItemLabelTint.h"
+#include "ConvenientScrollView.h"
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
 using namespace cocos2d;
@@ -22,21 +23,6 @@ bool PreferenceLayer::init()
     // Create the scroll view
     // ui::ScrollView is REALLY creepy... I don't know how to use it.
     auto scroll = Layer::create();
-    auto listener = EventListenerTouchOneByOne::create();
-    listener->setSwallowTouches(false);
-    listener->onTouchBegan = [this, scroll](Touch *touch, Event *event) {
-        Vec2 p = touch->getLocation();
-        _startPosY = scroll->getPositionY();
-        return true;
-    };
-    listener->onTouchMoved = [this, scroll](Touch *touch, Event *event) {
-        float y = _startPosY + touch->getLocation().y - touch->getStartLocation().y;
-        FIX_POS(y, -scroll->getContentSize().height + _contentSize.height, 0);
-        scroll->setPositionY(y);
-    };
-    listener->onTouchEnded = [this](Touch *touch, Event *event) {
-    };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, scroll);
     this->addChild(scroll);
 
     // Read previous set values
@@ -241,12 +227,7 @@ bool PreferenceLayer::init()
 
     // Update the size of the scroll view
     float miny = toggle_6->getPositionY() - toggle_6->getAnchorPointInPoints().y;
-    Size scrollSize = Size(_contentSize.width, _contentSize.height - miny);
-    CCLOG("scrollSize: %f x %f", scrollSize.width, scrollSize.height);
-    scroll->setContentSize(scrollSize);
-    scroll->setPositionY(_contentSize.height - scrollSize.height);
-    for (auto &c : scroll->getChildren())
-        c->setPositionY(c->getPositionY() - miny);
+    TURN_INTO_SCROLL_VIEW(_dragStartPos, scroll, _contentSize.height - miny, _contentSize.height);
 
     return true;
 }

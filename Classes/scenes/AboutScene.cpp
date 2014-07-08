@@ -1,5 +1,6 @@
 #include "AboutScene.h"
 #include "Global.h"
+#include "ConvenientScrollView.h"
 using namespace cocos2d;
 
 #define BOTTOM_LEFT_CORNER(_node) (_node->getPosition() - _node->getAnchorPointInPoints() * _node->getScale())
@@ -23,22 +24,9 @@ bool About::init()
     this->addChild(title, 1000);
     title->runAction(FADE_IN_DELAY(0.8, 0.3));
 
-    // Support scrolling
+    // Create a container, and turn it into a scroll view later
     auto scroll = Layer::create();
     this->addChild(scroll);
-    auto listener = EventListenerTouchOneByOne::create();
-    listener->setSwallowTouches(true);
-    listener->onTouchBegan = [this, scroll](Touch *touch, Event *event) {
-        _dragStartPos = scroll->getPositionY();
-        return true;
-    };
-    listener->onTouchMoved = [this, scroll](Touch *touch, Event *event) {
-        float y = _dragStartPos + touch->getLocation().y - touch->getStartLocation().y;
-        scroll->setPositionY(y);
-    };
-    listener->onTouchEnded = [this, scroll](Touch *touch, Event *event) {
-    };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     // Create contents
     auto logo = Sprite::create("images/cocos2dx_portrait.png");
@@ -85,6 +73,10 @@ bool About::init()
     ccbysa_lbl->setPosition(Vec2(onclr::vsize.width * 0.5, BOTTOM_LEFT_CORNER(ccbysa).y));
     FADE_IN_ELEM(ccbysa_lbl, 1.8);
     scroll->addChild(ccbysa_lbl);
+
+    // Support scrolling
+    float miny = BOTTOM_LEFT_CORNER(ccbysa_lbl).y - ccbysa_lbl->getContentSize().height;
+    TURN_INTO_SCROLL_VIEW(_dragStartPos, scroll, _contentSize.height - miny, _contentSize.height);
 
     return true;
 }
