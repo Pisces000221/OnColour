@@ -45,3 +45,5 @@ C++，附带一丁点Java（Android防止屏幕变暗时使用）
 --------
 所有源码文件使用MIT许可证进行发布。详见[LICENSE](https://github.com/Pisces000221/OnColour/blob/master/LICENSE)文件<br>
 所有媒体资源使用[CC BY-SA International 4.0](http://creativecommons.org/licenses/by-sa/4.0/)进行发布。
+
+<img src="https://raw.githubusercontent.com/Pisces000221/OnColour/master/Resources/images/cc_by_sa.png">

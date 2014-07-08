@@ -2,8 +2,8 @@
 #include "Global.h"
 using namespace cocos2d;
 
-#define BOTOOM_LEFT_CORNER(_node) (_node->getPosition() - _node->getAnchorPointInPoints() * _node->getScale())
-#define BOTOOM_RIGHT_CORNER(_node) (BOTOOM_LEFT_CORNER(_node) + cocos2d::Vec2(_node->getContentSize().width * _node->getScale(), 0))
+#define BOTTOM_LEFT_CORNER(_node) (_node->getPosition() - _node->getAnchorPointInPoints() * _node->getScale())
+#define BOTTOM_RIGHT_CORNER(_node) (BOTTOM_LEFT_CORNER(_node) + cocos2d::Vec2(_node->getContentSize().width * _node->getScale(), 0))
 #define FADE_IN_ELEM(_node, _delay) do { _node->setOpacity(0); _node->runAction(FADE_IN_DELAY(_delay, 0.3)); } while (0)
 
 bool About::init()
@@ -49,7 +49,7 @@ bool About::init()
     scroll->addChild(logo);
     auto logo_lbl = onclr::label("Game Engine: Cocos2d-x", 24 * s_ratio, false, Color3B::BLACK);
     logo_lbl->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-    logo_lbl->setPosition(BOTOOM_LEFT_CORNER(logo));
+    logo_lbl->setPosition(BOTTOM_LEFT_CORNER(logo));
     FADE_IN_ELEM(logo_lbl, 1);
     scroll->addChild(logo_lbl);
 
@@ -61,16 +61,30 @@ bool About::init()
     scroll->addChild(dev);
     auto dev_lbl = onclr::label("Pisces000221 the developer", 24 * s_ratio, false, Color3B::BLACK);
     dev_lbl->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-    dev_lbl->setPosition(BOTOOM_RIGHT_CORNER(dev));
+    dev_lbl->setPosition(BOTTOM_RIGHT_CORNER(dev));
     FADE_IN_ELEM(dev_lbl, 1.3);
     scroll->addChild(dev_lbl);
 
     auto popfx_lbl = onclr::label("Sound FX by\nJacob McCrary on FreeSound.org",
         30 * s_ratio, true, Color3B::BLACK, TextHAlignment::RIGHT);
     popfx_lbl->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-    popfx_lbl->setPosition(BOTOOM_RIGHT_CORNER(dev_lbl) - Vec2(12, 12));
+    popfx_lbl->setPosition(BOTTOM_RIGHT_CORNER(dev_lbl) - Vec2(12, 12));
     FADE_IN_ELEM(popfx_lbl, 1.5);
     scroll->addChild(popfx_lbl);
+
+    auto ccbysa = Sprite::create("images/cc_by_sa.png");
+    ccbysa->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+    ccbysa->setPosition(Vec2(onclr::vsize.width * 0.5, BOTTOM_LEFT_CORNER(popfx_lbl).y - popfx_lbl->getContentSize().height - 30));
+    ccbysa->setScale(0.4 * onclr::vsize.width / ccbysa->getContentSize().width);
+    FADE_IN_ELEM(ccbysa, 1.7);
+    scroll->addChild(ccbysa);
+    auto ccbysa_lbl = onclr::label(
+        "All artworks & sounds are released under\nCC-BY-SA International 4.0",
+        26 * s_ratio, false, GREY_3B(48), TextHAlignment::CENTER);
+    ccbysa_lbl->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+    ccbysa_lbl->setPosition(Vec2(onclr::vsize.width * 0.5, BOTTOM_LEFT_CORNER(ccbysa).y));
+    FADE_IN_ELEM(ccbysa_lbl, 1.8);
+    scroll->addChild(ccbysa_lbl);
 
     return true;
 }
